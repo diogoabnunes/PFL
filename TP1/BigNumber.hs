@@ -25,6 +25,22 @@ mudarSinalBN (x:xs) = (-x):xs
 negativoBN :: BigNumber -> Bool
 negativoBN (x:xs) = x < 0
 
+-- Comparação de BigNumber's
+auxMaiorBN :: BigNumber -> BigNumber -> Bool
+auxMaiorBN [x] [y] = x > y
+auxMaiorBN (x:xs) (y:ys)
+    | length (x:xs) > length (y:ys) = True
+    | length (x:xs) < length (y:ys) = False
+    | x /= y = x > y
+    | otherwise = auxMaiorBN xs ys
+
+maiorBN :: BigNumber -> BigNumber -> Bool
+maiorBN (x:xs) (y:ys)
+    | negativoBN (x:xs) && not (negativoBN (y:ys)) = False
+    | not (negativoBN (x:xs)) && negativoBN (y:ys) = True
+    | negativoBN (x:xs) && negativoBN (y:ys) = auxMaiorBN (-y:ys) (-x:xs)
+    | otherwise = auxMaiorBN (x:xs) (y:ys)
+
 -- 2.2. somaBN
 auxSomaBN :: (Num t, Ord t) => [t] -> [t] -> t -> [t]
 auxSomaBN [] [] 0 = []
@@ -79,7 +95,7 @@ subBN a b
 -- 2.4. mulBN
 --mulBN :: BigNumber -> BigNumber -> BigNumber
 
--- 2.5. divBN -> TODO: buggy qnd entra em auxDivBN -> a > b
+-- 2.5. divBN
 auxCarryBN :: Integral t => [t] -> t -> [t]
 auxCarryBN [] a = [a]
 auxCarryBN (x:xs) a = mod (x+a) 10 : auxCarryBN xs (div (x+a) 10)
@@ -89,7 +105,7 @@ carryBN xs = removerZerosEsquerdaBN (reverse (auxCarryBN (reverse xs) 0))
 
 auxDivBN :: BigNumber -> BigNumber -> Int -> (BigNumber, BigNumber)
 auxDivBN a b n 
-    | a > b || a == b =
+    | maiorBN a b || a == b =
         auxDivBN (subBN a b) b (n+1)
     | otherwise = (carryBN [n], carryBN a)
 
@@ -101,5 +117,5 @@ divBN a b
         divBN (mudarSinalBN a) b
     | not (negativoBN a) && negativoBN b = -- (+a)/(-b)
         divBN a (mudarSinalBN b)
-    | otherwise = -- (+a)/(+b)
+    | not (negativoBN a) && not (negativoBN b) = -- (+a)/(+b)
         auxDivBN a b 0
