@@ -7,8 +7,8 @@
 
 2. [ ] **(Mais valorizada do trabalho)** Módulo de aritmética para big-numbers para implementar novas versões das funções já definidas para este novo tipo. Definir este módulo em **BigNumber.hs**. Um big-number é representado por uma lista dos seus dígitos. O objetivo do módulo é representar estruturas para big-numbers (ex. listas) e implementar as funções básicas de aritmética para big-numbers.
    1. [ ] Definição do tipo BigNumber (usando a keyword __data__)
-   2. [ ] **somaBN** :: BigNumber -> BigNumber -> BigNumber
-   3. [ ] **subBN** :: BigNumber-> BigNumber-> BigNumber
+   2. [x] **somaBN** :: BigNumber -> BigNumber -> BigNumber
+   3. [x] **subBN** :: BigNumber-> BigNumber-> BigNumber
    4. [ ] **mulBN** :: BigNumber-> BigNumber-> BigNumber
    5. [ ] **divBN** (divisão inteira e deve retornar um par (quociente, resto)) :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 Para facilitar as operações, assuma que os dígitos podem estar na lista por ordem inversa, chamando inicialmente uma função de reverse.

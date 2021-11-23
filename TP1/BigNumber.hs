@@ -8,8 +8,8 @@
 type BigNumber = [Int]
 -- TODO: Dúvida prof, como representar em "data"?
 -- TODO: Dúvida prof, soma e sub funcionam só para valores (listas) positivos.
--- É suposto tratar caso sejam negativos?
--- Ou deduz-se que são sempre positivos?
+-- É suposto tratar caso sejam negativos? Sim, é suposto tratar.
+-- Ou deduz-se que são sempre positivos? Não, não se deduz.
 
 -- Remove Left Zeros: Ex.: [0,1,2,3] -> [1,2,3]
 removerZerosEsquerdaBN :: BigNumber -> BigNumber
@@ -21,6 +21,10 @@ removerZerosEsquerdaBN xs = xs
 mudarSinalBN :: BigNumber -> BigNumber
 mudarSinalBN (x:xs) = (-x):xs
 
+-- Verifica se um BN é negativo: Ex.: [-1,2,3] -> True
+negativoBN :: BigNumber -> Bool
+negativoBN (x:xs) = x < 0
+
 -- 2.2. somaBN
 auxSomaBN :: (Num t, Ord t) => [t] -> [t] -> t -> [t]
 auxSomaBN [] [] 0 = []
@@ -29,12 +33,20 @@ auxSomaBN (x:xs) [] a = (x+a):xs
 auxSomaBN [] (y:ys) a = (y+a):ys
 auxSomaBN (x:xs) (y:ys) a
     | (x+y+a) < 10 = (x+y+a):auxSomaBN xs ys 0
-    | otherwise = (x+y+a-10):auxSomaBN xs ys 1
+    | otherwise = (x+y+a-10):auxSomaBN xs ys 1 -- Carry
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
-somaBN a b = removerZerosEsquerdaBN 
-    (reverse
-        (auxSomaBN (reverse a) (reverse b) 0))
+somaBN a b
+    | not (negativoBN a) && not (negativoBN b) = -- (+a)+(+b)=(+a)+(+b)
+        removerZerosEsquerdaBN 
+            (reverse
+                (auxSomaBN (reverse a) (reverse b) 0))
+    | not (negativoBN a) && negativoBN b = -- (+a)+(-b)=(+a)-(+b)
+        subBN a (mudarSinalBN b)
+    | negativoBN a && not (negativoBN b) = -- (-a)+(+b)=(+b)-(+a)
+        subBN b (mudarSinalBN a)
+    | negativoBN a && negativoBN b = -- (-a)+(-b)=-((+a)+(+b))
+        mudarSinalBN (somaBN (mudarSinalBN a) (mudarSinalBN b))
 
 -- 2.3. subBN
 auxSubBN :: (Num t, Ord t) => [t] -> [t] -> t -> [t]
@@ -52,14 +64,18 @@ auxSubBN (x:xs) (y:ys) a
 
 subBN :: BigNumber -> BigNumber -> BigNumber
 subBN a b
-    | a > b = removerZerosEsquerdaBN
+    | a == b = [0]
+    | negativoBN a && negativoBN b = -- (-a)-(-b)=(+b)-(a)
+        subBN (mudarSinalBN b) (mudarSinalBN a)
+    | negativoBN a && not (negativoBN b) = -- (-a)-(+b)=(-a)+(-b)
+        somaBN a (mudarSinalBN b)
+    | not (negativoBN a) && negativoBN b = -- (+a)-(-b)=(+a)+(+b)
+        somaBN a (mudarSinalBN b)
+    | a > b = removerZerosEsquerdaBN -- (+a)-(+b)=a-b
         (reverse
             (auxSubBN (reverse a) (reverse b) 0))
-    | a < b = mudarSinalBN
-        (removerZerosEsquerdaBN
-            (reverse 
-                (auxSubBN (reverse b) (reverse a) 0)))
-    | otherwise = [0]
+    | a < b =  -- (+a)-(+b)=-(+a)-(+b)
+        mudarSinalBN (subBN b a)
 
 -- 2.4. mulBN
 --mulBN :: BigNumber -> BigNumber -> BigNumber
