@@ -105,12 +105,14 @@ carryBN xs = removerZerosEsquerdaBN (reverse (auxCarryBN (reverse xs) 0))
 
 auxDivBN :: BigNumber -> BigNumber -> Int -> (BigNumber, BigNumber)
 auxDivBN a b n 
-    | maiorBN a b || a == b =
+    | maiorBN a b || a == b = -- 120 div 100 (quociente 0) = divInt(120/100) div 100 (quociente 1)
         auxDivBN (subBN a b) b (n+1)
-    | otherwise = (carryBN [n], carryBN a)
+    | otherwise = -- 100 div 120 (quociente 0) = (0, 100 (resto))
+        (carryBN [n], carryBN a)
 
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN a b 
+    | b == [0] = error "Infinity"
     | negativoBN a && negativoBN b = -- (-a)/(-b)
         divBN (mudarSinalBN a) (mudarSinalBN b)
     | negativoBN a && not (negativoBN b) = -- (-a)/(+b)
