@@ -14,11 +14,14 @@
 Para facilitar as operações, assuma que os dígitos podem estar na lista por ordem inversa, chamando inicialmente uma função de reverse.
 Ex.: 123 + 49 = 172 -> [3,2,1] + [9,4] = [2,7,1]
 
-3. [ ] Em Fib.hs, incluir o módulo dos big-numbers e implementar **fibRecBN**, **fibListaBN**, **fibListaInfinitaBN**
+3. [x] Em Fib.hs, incluir o módulo dos big-numbers e implementar
+   1. [x] **fibRecBN**
+   2. [x] **fibListaBN**
+   3. [x] **fibListaInfinitaBN**
 
-4. [ ] Comparar resoluções das alíneas 1 e 3 com tipos (Int -> Int), (Integer-> Integer) e (BigNumber-> BigNumber), comparando a aplicação a nºs grandes e verificando qual o maior número que cada uma aceita como argumento
+4. [ ] Comparar resoluções das alíneas 1 e 3 com tipos (Int -> Int), (Integer -> Integer) e (BigNumber-> BigNumber), comparando a aplicação a nºs grandes e verificando qual o maior número que cada uma aceita como argumento
 
-5. [ ] Acrescentar ao módulo de big-numbers a capacidade de detetar divisões por zero em compile-time -> função divisão deverá retornar monads do tipo **Maybe**. **safeDivBN** :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
+5. [x] Acrescentar ao módulo de big-numbers a capacidade de detetar divisões por zero em compile-time -> função divisão deverá retornar monads do tipo **Maybe**. **safeDivBN** :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
 
 ## Instruções
 
