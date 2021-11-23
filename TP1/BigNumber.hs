@@ -9,15 +9,18 @@ module BigNumber (BigNumber,
 type BigNumber = [Int]
 -- TODO: Dúvida prof, como representar em "data"?
 
--- Remove Left Zeros: Ex.: [0,1,2,3] -> [1,2,3]
+-- Remove Left Zeros: Ex.: [0,0,0,1,2,3] -> [1,2,3]
 removerZerosEsquerdaBN :: BigNumber -> BigNumber
 removerZerosEsquerdaBN [0] = [0]
-removerZerosEsquerdaBN (0:xs) = xs
+removerZerosEsquerdaBN (0:xs) = removerZerosEsquerdaBN xs
 removerZerosEsquerdaBN xs = xs
 
 -- Mudança de sinal: Ex.: [1,2,3] -> [-1,2,3]
 mudarSinalBN :: BigNumber -> BigNumber
 mudarSinalBN (x:xs) = (-x):xs
+
+mudarSinalDivBN :: (BigNumber, BigNumber) -> (BigNumber, BigNumber)
+mudarSinalDivBN (xs, ys) = (mudarSinalBN xs, mudarSinalBN ys)
 
 -- Verifica se um BN é negativo: Ex.: [-1,2,3] -> True
 negativoBN :: BigNumber -> Bool
@@ -47,7 +50,7 @@ auxSomaBN (x:xs) [] a = (x+a):xs
 auxSomaBN [] (y:ys) a = (y+a):ys
 auxSomaBN (x:xs) (y:ys) a
     | (x+y+a) < 10 = (x+y+a):auxSomaBN xs ys 0
-    | otherwise = (x+y+a-10):auxSomaBN xs ys 1 -- Carry
+    | otherwise = (x+y+a-10):auxSomaBN xs ys 1
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
 somaBN a b
@@ -95,19 +98,12 @@ mulBN :: BigNumber -> BigNumber -> BigNumber
 mulBN a b = a
 
 -- 2.5. divBN
-auxCarryBN :: Integral t => [t] -> t -> [t]
-auxCarryBN [] a = [a]
-auxCarryBN (x:xs) a = mod (x+a) 10 : auxCarryBN xs (div (x+a) 10)
-
-carryBN :: BigNumber -> BigNumber
-carryBN xs = removerZerosEsquerdaBN (reverse (auxCarryBN (reverse xs) 0))
-
 auxDivBN :: BigNumber -> BigNumber -> Int -> (BigNumber, BigNumber)
 auxDivBN a b n 
     | maiorBN a b || a == b = -- 120 div 100 (quociente 0) = divInt(120/100) div 100 (quociente 1)
         auxDivBN (subBN a b) b (n+1)
     | otherwise = -- 100 div 120 (quociente 0) = (0, 100 (resto))
-        (carryBN [n], carryBN a)
+        ([n], a)
 
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN a b 
@@ -115,14 +111,14 @@ divBN a b
     | negativoBN a && negativoBN b = -- (-a)/(-b)
         divBN (mudarSinalBN a) (mudarSinalBN b)
     | negativoBN a && not (negativoBN b) = -- (-a)/(+b)
-        divBN (mudarSinalBN a) b
+        mudarSinalDivBN (divBN (mudarSinalBN a) b)
     | not (negativoBN a) && negativoBN b = -- (+a)/(-b)
-        divBN a (mudarSinalBN b)
+        mudarSinalDivBN (divBN a (mudarSinalBN b))
     | not (negativoBN a) && not (negativoBN b) = -- (+a)/(+b)
         auxDivBN a b 0
 
 -- 5. safeDivBN
 safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
 safeDivBN a b
-    | maiorBN b [0] = Just (divBN a b)
-    | otherwise = Nothing
+    | b == [0] = Nothing
+    | otherwise = Just (divBN a b)
