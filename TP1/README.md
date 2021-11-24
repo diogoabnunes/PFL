@@ -2,6 +2,10 @@
 
 ## Descrição de casos de teste para todas as funções
 
+### \<Ficheiro>.hs
+- \<Função>(, \<Função2>, ...)
+  - \<Input> -> \<Output>
+
 ### Fib.hs
 - fibRec, fibLista, fibListaInfinita:
   - 10 -> 55
@@ -50,12 +54,13 @@ No ficheiro **Fib.hs**, todas as funções pedidas têm o resultado esperado (o 
 
 No ficheiro **BigNumber.hs**, o processo de cálculo é sempre feito na função aux\<Operação>BN, onde é tratado o problema do carry. As funções pedidas limitam-se a "ver" o sinal do BigNumber (no nosso caso, representamos com o sinal - antes do primeiro algarismo na lista) e a chamar a operação correta. Tal como fui sugerido no enunciado, o cálculo é feito com 2 listas na ordem inversa, começando pelo cálculo do algarismo das unidades, das dezenas, e por aí adiante. Na função pedida na alínea 5, limitamo-nos a verificar se o segundo argumento (denominador) é 0: se for, retorna Nothing, caso contrário, faz a divisão normalmente (Just (divBN a b)). A nossa função divBN também não permite a divisão por zero, retornando neste caso uma exceção (Exception: Infinity).
 
-Temos ainda mais 5 funções auxiliares, que nos permitem simplificar o código das funções pedidas:
+Temos ainda mais 6 funções auxiliares, que nos permitem simplificar o código das funções pedidas:
 - removerZerosEsquerdaBN, onde apenas retiramos os zeros iniciais num BigNumber;
 - mudarSinalBN: mudamos o sinal do primeiro elemento de um BigNumber;
 - mudarSinalDivBN: mudamos o sinal dos 2 elementos de um par de BigNumber's (usado para divBN onde um dos elementos é negativo);
 - negativoBN: função que retorna True se um BigNumber é negativo;
 - maiorBN (e auxMaiorBN): função que retorna True se um BigNumber for maior que outro.
+- carryBN (e auxCarryBN): usado em mulBN e divBN, é usado para formatar o BigNumber. Ex.: carryBN [1,2,3,45] retorna [1,2,7,5]: o algarismo 4 soma com o 3 das "dezenas", e assim o BigNumber fica bem formatado.
 
 ## Estratégias utilizadas na implementação das funções da alínea 2
 
