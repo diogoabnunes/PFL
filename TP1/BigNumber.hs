@@ -1,17 +1,18 @@
 module BigNumber (BigNumber (..),
-    scanner,
-    output,
-    somaBN,
-    subBN, 
+    scanner, output,
+    somaBN, subBN, 
     --mulBN, 
     divBN,
     safeDivBN,
-    maiorBN) where
+    removerZerosEsquerdaBN, mudarSinalBN, mudarSinalDivBN,
+    auxMaiorBN, maiorBN,
+    removeBN, appendBN, reverseBN
+    ) where
 
 -- 2.1. Definição do tipo BigNumber (usando a keyword "data")
 data BigNumber = Positive [Int] | Negative [Int] deriving (Show)
 
--- Remove Left Zeros: Ex.: [0,0,0,1,2,3] -> [1,2,3]
+-- Função auxiliar: Remoção dos Zeros à esquerda
 removerZerosEsquerdaBN :: BigNumber -> BigNumber
 removerZerosEsquerdaBN (Positive [0]) = Positive [0]
 removerZerosEsquerdaBN (Negative [0]) = Negative [0]
@@ -20,13 +21,14 @@ removerZerosEsquerdaBN (Negative (0:xs)) = removerZerosEsquerdaBN (Negative xs)
 removerZerosEsquerdaBN (Positive xs) = Positive xs
 removerZerosEsquerdaBN (Negative xs) = Negative xs
 
--- Mudança de sinal
+-- Função auxiliar: Mudança de sinal de um BigNumber
 mudarSinalBN :: BigNumber -> BigNumber
 mudarSinalBN (Positive a) = Negative a
 mudarSinalBN (Negative a) = Positive a
 
+-- Mudança de sinal de um par de BigNumber's
 mudarSinalDivBN :: (BigNumber, BigNumber) -> (BigNumber, BigNumber)
-mudarSinalDivBN (xs, ys) = (mudarSinalBN xs, mudarSinalBN ys)
+mudarSinalDivBN (a, b) = (mudarSinalBN a, mudarSinalBN b)
 
 -- Comparação de BigNumber's
 auxMaiorBN :: BigNumber -> BigNumber -> Bool
@@ -42,9 +44,11 @@ maiorBN :: BigNumber -> BigNumber -> Bool
 maiorBN (Negative a) (Positive b) = False
 maiorBN (Positive a) (Negative b) = True
 maiorBN (Negative a) (Negative b) = maiorBN (Positive b) (Positive a)
-maiorBN (Positive a) (Positive b) = auxMaiorBN (Positive a) (Positive b)
+maiorBN (Positive a) (Positive b) = auxMaiorBN 
+    (removerZerosEsquerdaBN (Positive a))
+    (removerZerosEsquerdaBN (Positive b))
 
--- Remoção de um elemento/caractere de uma lista/string
+-- Remoção de um elemento/caractere de uma lista/string -> usado no scanner
 removeBN :: Eq a => [a] -> a -> [a]
 removeBN [] a = []
 removeBN (x:xs) a
@@ -82,15 +86,15 @@ auxSomaBN (Positive (x:xs)) (Positive (y:ys)) a
     | otherwise = appendBN (x+y+a-10) (auxSomaBN (Positive xs) (Positive ys) 1)
 
 somaBN :: BigNumber -> BigNumber -> BigNumber
+somaBN (Positive a) (Negative b) = subBN (Positive a) (Positive b)
+somaBN (Negative a) (Positive b) = subBN (Positive b) (Positive a)
+somaBN (Negative a) (Negative b) = mudarSinalBN (somaBN (Positive a) (Positive b))
 somaBN (Positive a) (Positive b) = removerZerosEsquerdaBN
             (reverseBN
                     (auxSomaBN
                         (Positive (reverse a))
                         (Positive (reverse b))
                         0))
-somaBN (Positive a) (Negative b) = subBN (Positive a) (Positive b)
-somaBN (Negative a) (Positive b) = subBN (Positive b) (Positive a)
-somaBN (Negative a) (Negative b) = mudarSinalBN (somaBN (Positive a) (Positive b))
 
 -- 2.5. subBN
 auxSubBN :: BigNumber -> BigNumber -> Int -> BigNumber
