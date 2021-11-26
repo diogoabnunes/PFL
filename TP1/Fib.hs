@@ -20,29 +20,30 @@ fibListaInfinita n = fibs !! n
 
 -- fibRecBN
 fibRecBN :: BigNumber -> BigNumber
-fibRecBN [0] = [0]
-fibRecBN [1] = [1]
-fibRecBN n = somaBN (fibRecBN (subBN n [2])) (fibRecBN (subBN n [1]))
+fibRecBN (Positive [0]) = Positive [0]
+fibRecBN (Positive [1]) = Positive [1]
+fibRecBN (Positive n) = somaBN
+                (fibRecBN (subBN (Positive n) (Positive [2])))
+                (fibRecBN (subBN (Positive n) (Positive [1])))
 
 -- fibsBN: Lista de Fibonacci em BigNumber
 fibsBN :: [BigNumber]
-fibsBN = [0] : [1] : zipWith somaBN fibsBN (tail fibsBN)
+fibsBN = Positive [0] : Positive [1] : zipWith somaBN fibsBN (tail fibsBN)
 
 indexAtBN :: [BigNumber] -> BigNumber -> BigNumber
 indexAtBN (x:xs) n
-    | maiorBN n [0] = indexAtBN xs (subBN n [1])
+    | maiorBN n (Positive [0]) = indexAtBN xs (subBN n (Positive [1]))
     | otherwise = x
 
 -- fibListaBN
 fibListaBN :: BigNumber -> BigNumber
-fibListaBN n
-    | n == [0] = [0]
-    | n == [1] = [1]
+fibListaBN (Positive n)
+    | n == [0] = Positive [0]
+    | n == [1] = Positive [1]
     | otherwise = somaBN
-        (indexAtBN auxFibListaBN (subBN n [1]))
-        (indexAtBN auxFibListaBN (subBN n [2]))
-            where auxFibListaBN = [fibListaBN [num] | num <- [0 .. ]]
-
+        (indexAtBN auxFibListaBN (subBN (Positive n) (Positive [1])))
+        (indexAtBN auxFibListaBN (subBN (Positive n) (Positive [2])))
+            where auxFibListaBN = [fibListaBN (Positive [num]) | num <- [0 .. ]]
 
 -- fibListaInfinitaBN
 fibListaInfinitaBN :: BigNumber -> BigNumber

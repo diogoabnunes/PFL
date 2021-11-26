@@ -6,7 +6,7 @@
    3. [x] **fibListaInfinita**, para gerar uma lista infinita com todos os nºs de Fibonacci e retornar o elemento de ordem n
 
 2. [ ] **(Mais valorizada do trabalho)** Módulo de aritmética para big-numbers para implementar novas versões das funções já definidas para este novo tipo. Definir este módulo em **BigNumber.hs**. Um big-number é representado por uma lista dos seus dígitos. O objetivo do módulo é representar estruturas para big-numbers (ex. listas) e implementar as funções básicas de aritmética para big-numbers.
-   1. [ ] Definição do tipo BigNumber (usando a keyword __data__)
+   1. [x] Definição do tipo BigNumber (usando a keyword __data__)
    2. [x] **somaBN** :: BigNumber -> BigNumber -> BigNumber
    3. [x] **subBN** :: BigNumber -> BigNumber -> BigNumber
    4. [ ] **mulBN** :: BigNumber -> BigNumber -> BigNumber

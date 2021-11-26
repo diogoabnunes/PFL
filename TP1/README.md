@@ -7,46 +7,59 @@
   - \<Input> -> \<Output>
 
 ### Fib.hs
-- fibRec, fibLista, fibListaInfinita:
-  - 10 -> 55
-  - 20 -> 6765
-  - 30 -> 832040
+| função | arg | resultado |
+| -- | -- | -- |
+| fibRec | 10 | 55 |
+| fibRec | 20 | 6765 |
+| fibRec | 30 | 832040 |
+| fibLista | 10 | 55 |
+| fibLista | 20 | 6765 |
+| fibLista | 30 | 832040 |
+| fibListaInfinita | 10 | 55 |
+| fibListaInfinita | 20 | 6765 |
+| fibListaInfinita | 30 | 832040 |
+| fibRecBN | (Positive [1,0]) | Positive [5,5] |
+| fibRecBN | (Positive [2,0]) | Positive [6,7,6,5] |
+| fibRecBN | (Positive [3,0]) | Positive [8,3,2,0,4,0] |
+| fibListaBN | 10 | 55 |
+| fibListaBN | 20 | 6765 |
+| fibListaBN | 30 | 832040 |
+| fibListaInfinitaBN | 10 | 55 |
+| fibListaInfinitaBN | 20 | 6765 |
+| fibListaInfinitaBN | 30 | 832040 |
 - fibRecBN, fibListaBN, fibListaInfinitaBN:
-  - [1,0] -> [5,5]
-  - [2,0] -> [6,7,6,5]
-  - [3,0] -> [8,3,2,0,4,0]
+  - (Positive [1,0]) -> Positive [5,5]
+  - (Positive [2,0]) -> Positive [6,7,6,5]
+  - (Positive [3,0]) -> Positive [8,3,2,0,4,0]
 - fibs -> [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765,10946,17711,28657,46368,75025,121393,196418,317811,514229,832040,...]
-- fibsBN -> [[0],[1],[1],[2],[3],[5],[8],[1,3],[2,1],[3,4],[5,5],[8,9],[1,4,4],[2,3,3],[3,7,7],[6,1,0],[9,8,7],[1,5,9,7],[2,5,8,4],[4,1,8,1],[6,7,6,5],[1,0,9,4,6],[1,7,7,1,1],[2,8,6,5,7],[4,6,3,6,8],[7,5,0,2,5],[1,2,1,3,9,3],[1,9,6,4,1,8],[3,1,7,8,1,1],[5,1,4,2,2,9],[8,3,2,0,4,0],...]
+- fibsBN -> [Positive [0],Positive [1],Positive [1],Positive [2],Positive [3],Positive [5],Positive [8],Positive [1,3],Positive [2,1],Positive [3,4],Positive [5,5],...]
 
 ### BigNumber.hs
-- somaBN:
-  - [1,2,3] [4,5,6] -> [5,7,9]
-  - [1,2,3] [-4,5,6] -> [-3,3,3]
-  - [-1,2,3] [4,5,6] -> [3,3,3]
-  - [-1,2,3] [-4,5,6] -> [-5,7,9]
-- subBN:
-  - [1,2,3] [4,5,6] -> [-3,3,3]
-  - [1,2,3] [-4,5,6] -> [5,7,9]
-  - [-1,2,3] [4,5,6] -> [-5,7,9]
-  - [-1,2,3] [-4,5,6] -> [3,3,3]
-- mulBN: TODO:
-- divBN:
-  - [1,2,0] [1,0,0] -> ([1], [2,0])
-  - [1,0,0] [0] -> Error: Infinity
-- safeDivBN:
-  - [1,2,0] [1,0,0] -> Just ([1], [2,0])
-  - [1,0,0] [0] -> Nothing
-- removerZerosEsquerdaBN:
-  - [0,0,0,1,2,3] -> [1,2,3]
-- mudarSinalBN:
-  - [1,2,3] -> [-1,2,3]
-  - [-1,2,3] -> [1,2,3]
-- negativoBN:
-  - [1,2,3] -> False
-  - [-1,2,3] -> True
-- maiorBN:
-  - [1] [-1,2,3] -> True
-  - [-9,9,9] [0] -> False
+  
+| função | arg1 | arg2 | resultado |
+| -- | -- | -- | -- |
+| somaBN | (Positive [1,2,3]) | (Positive [4,5,6]) | Positive [5,7,9] |
+| somaBN | (Positive [1,2,3]) | (Negative [4,5,6]) | Negative [3,3,3] |
+| somaBN | (Negative [1,2,3]) | (Positive [4,5,6]) | Positive [3,3,3] |
+| somaBN | (Negative [1,2,3]) | (Negative [4,5,6]) | Negative [5,7,9] |
+| -- | -- | -- | -- |
+| subBN | (Positive [1,2,3]) | (Positive [4,5,6]) | Negative [3,3,3] |
+| subBN | (Positive [1,2,3]) | (Negative [4,5,6]) | Positive [5,7,9] |
+| subBN | (Negative [1,2,3]) | (Positive [4,5,6]) | Negative [5,7,9] |
+| subBN | (Negative [1,2,3]) | (Negative [4,5,6]) | Positive [3,3,3] |
+| -- | -- | -- | -- |
+| mulBN | (Positive [1,2,3]) | (Positive [4,5,6]) | TODO:  |
+| mulBN | (Positive [1,2,3]) | (Negative [4,5,6]) | TODO:  |
+| mulBN | (Negative [1,2,3]) | (Positive [4,5,6]) | TODO:  |
+| mulBN | (Negative [1,2,3]) | (Negative [4,5,6]) | TODO:  |
+| -- | -- | -- | -- |
+| divBN | (Positive [1,2,0]) | (Positive [1,0,0]) | (Positive [1],Positive [2,0]) |
+| divBN | (Positive [1,2,0]) | (Negative [1,0,0]) | (Negative [1],Negative [2,0]) |
+| divBN | (Negative [1,2,0]) | (Negative [1,0,0]) | (Positive [1],Positive [2,0]) |
+| divBN | (Positive [1,2,0]) | (Positive [0]) | Exception: Infinity |
+| -- | -- | -- | -- |
+| safeDivBN | (Positive [1,2,0]) | (Positive [1,0,0]) | Just (Positive [1],Positive [2,0]) |
+| safeDivBN | (Positive [1,2,0]) | (Positive [0]) | Nothing |
 
 ## Explicação sucinta do funcionamento de cada função
 
