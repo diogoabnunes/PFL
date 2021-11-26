@@ -89,7 +89,7 @@ Na nossa implementação, um BigNumber é composto por:
 data BigNumber = Positive [Int] | Negative [Int] deriving (Show)
 ```
 
-No ficheiro **Fib.hs**, todas as funções pedidas têm o resultado esperado (o número de Fibonacci no índice passado por argumento). As listas infinitas criadas para as alíneas 1. e 3. foram feitas com o recurso à função *zipWith*. Temos ainda uma função auxiliar *indexAtBN*, que, tal como o nome indica, retorna o índice de um dado elemento (BigNumber) numa lista (de BigNumber's).
+No ficheiro **Fib.hs**, todas as funções pedidas têm o resultado esperado (o número de Fibonacci no índice passado por argumento). As listas infinitas criadas para as alíneas 1. e 3. foram feitas com o recurso à função *zipWith*. Temos ainda uma função auxiliar *indexAtBN*, que, tal como o nome indica, retorna o índice de um dado elemento (BigNumber) numa lista (de BigNumber's). Nas chamadas às funções de Fibonacci, caso coloquemos como input um BigNumber negativo, o resultado é "Exception: There is no negative index".
 
 No ficheiro **BigNumber.hs**, as operações são sempre realizadas na função aux\<Operação>BN, com exceção da divisão (como o cálculo é mais complexo, temos ainda as funções carryBN, auxCarryBN e carryPairBN para nos ajudar no mesmo), onde é tratado o problema do carry.
 
@@ -111,6 +111,10 @@ Temos ainda mais 7 funções auxiliares:
 - reverseBN: função reverse mas adaptada a BigNumber's (para ter em conta o prefixo de sinal);
 
 ## Estratégias utilizadas na implementação das funções da alínea 2
+
+Seguindo a ordem do enunciado, a nossa função *scanner* recebe uma string e a primeira verificação que faz é confirmar que o primeiro caractere dessa string é ou não o sinal "-". Se for, vai ser construído um BigNumber negativo com a lista de algarismos que vão sendo lidos (usando a função map), mas a string a ser usada no map precisa da remoção do caractere "-". Caso não tenha esse caractere, não precisa desta remoção e apenas cria um BigNumber positivo usando a função map com a string inicial.
+
+A nossa função output é provavelmente a mais trivial em todo o nosso projeto: caso seja dado como argumento um BigNumber positivo, usamos a função concatMap, que percorre a lista de algarismos e concatena-os numa string através da função show. Caso o argumento seja um BigNumber negativo, apenas concatena um sinal "-" antes da mesma chamada à função concatMap.
 
 Tal como já foi aqui dito, as funções da alínea 2 limitam-se a verificar o sinal dos argumentos para chamar a respetiva operação que tem que fazer. 
 

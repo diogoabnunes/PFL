@@ -1,8 +1,8 @@
 module BigNumber (BigNumber (..),
     scanner, output,
-    somaBN, subBN, 
-    --mulBN, 
-    divBN,
+    somaBN, auxSomaBN, subBN, auxSubBN, 
+    --mulBN, auxMulBN,
+    divBN, auxDivBN, carryBN, auxCarryBN, carryPairBN,
     safeDivBN,
     removerZerosEsquerdaBN, mudarSinalBN, mudarSinalDivBN,
     auxMaiorBN, maiorBN,
@@ -67,8 +67,8 @@ reverseBN (Negative n) = Negative (reverse n)
 -- 2.2. scanner
 scanner :: String -> BigNumber
 scanner str
-    | head str == '-' = Negative (map(\x -> read[x]) (removeBN str '-'))
-    | otherwise = Positive (map(\x -> read[x]) str)
+    | head str == '-' = Negative (map (\x -> read[x]) (removeBN str '-'))
+    | otherwise = Positive (map (\x -> read[x]) str)
 
 -- 2.3. output
 output :: BigNumber -> String
