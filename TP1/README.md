@@ -53,10 +53,8 @@ Funções pedidas:
 | subBN | (Negative [1,2,3]) | (Positive [4,5,6]) | Negative [5,7,9] |
 | subBN | (Negative [1,2,3]) | (Negative [4,5,6]) | Positive [3,3,3] |
 | -- | -- | -- | -- |
-| mulBN | (Positive [1,2,3]) | (Positive [4,5,6]) | TODO:  |
-| mulBN | (Positive [1,2,3]) | (Negative [4,5,6]) | TODO:  |
-| mulBN | (Negative [1,2,3]) | (Positive [4,5,6]) | TODO:  |
-| mulBN | (Negative [1,2,3]) | (Negative [4,5,6]) | TODO:  |
+| mulBN | (Positive [1,2,3]) | (Positive [4,5,6]) | Positive [1,5,1,2,9] |
+| mulBN | (Positive [1,2,3]) | (Negative [4,5,6]) | Negative [1,5,1,2,9] |
 | -- | -- | -- | -- |
 | divBN | (Positive [1,2,0]) | (Positive [1,0,0]) | (Positive [1],Positive [2,0]) |
 | divBN | (Positive [1,2,0]) | (Negative [1,0,0]) | (Negative [1],Negative [2,0]) |
@@ -85,7 +83,6 @@ Funções auxiliares de 2 argumentos:
 | maiorBN | (Positive [1,2,3]) | (Positive [1,2,3]) | False |
 | removeBN | "-123" | '-' | "123" |
 | appendBN | 1 | (Positive [2,3,4]) | Positive [1,2,3,4] |
-
 
 ## Explicação sucinta do funcionamento de cada função
 
@@ -123,7 +120,7 @@ Funções auxiliares de 2 argumentos:
 - **removerZerosEsquerdaBN**: remoção dos zeros iniciais ("à esquerda") de um BigNumber.
 - **mudarSinalBN**: mudança do prefixo de sinal de um BigNumber.
 - **mudarSinalDivBN**: mudança de sinal dos 2 elementos de um par de BigNumber's (usado para divBN onde um dos elementos é negativo).
-- **auxMaiorBN**: 
+- **auxMaiorBN**: função que, dados 2 BN positivos, verifica qual deles é maior, tendo em conta o tamanho da lista e só depois o valor de cada algarismo.
 - **maiorBN**: função que retorna True se um BigNumber for maior que outro.
 - **removeBN**: remoção de um elemento/caractere de uma lista/string (usado no scanner, para remover o sinal "menos" numa string).
 - **appendBN**: função que dá *append* de um elemento a uma lista (função a:b mas adaptada a BigNumber's (para ter em conta o prefixo de sinal).
