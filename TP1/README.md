@@ -110,13 +110,13 @@ Funções auxiliares de 2 argumentos:
 
 #### Funções pedidas
 
-- **scanner**: 
-- **output**: 
-- **somaBN**: 
-- **subBN**: 
-- **mulBN**: 
-- **divBN**: 
-- **safeDivBN**: 
+- **scanner**: função que recebe uma string e retorna um BigNumber;
+- **output**: função que recebe um BigNumber e retorna uma string;
+- **somaBN**: função que recebe 2 BigNumber's e retorna a sua soma;
+- **subBN**: função que recebe 2 BigNumber's e retorna a sua diferença;
+- **mulBN**: função que recebe 2 BigNumber's e retorna a sua multiplicação;
+- **divBN**: função que recebe 2 BigNumber's e retorna um tuplo constituído por quociente e resto;
+- **safeDivBN**: função equivalente a divBN mas capaz de detetar divisões por zero (retornando Nothing).
 
 #### Funções auxiliares
 
@@ -128,25 +128,25 @@ Funções auxiliares de 2 argumentos:
 - **removeBN**: remoção de um elemento/caractere de uma lista/string (usado no scanner, para remover o sinal "menos" numa string).
 - **appendBN**: função que dá *append* de um elemento a uma lista (função a:b mas adaptada a BigNumber's (para ter em conta o prefixo de sinal).
 - **reverseBN**: função que dá *reverse* à lista de algarismos de um BigNumber e preserva o sinal.
-- **auxSomaBN**: 
-- **auxSubBN**: 
-- **auxMulBN**: TODO: 
-- **auxCarryBN**: 
-- **carryBN**: 
-- **carryPairBN**: 
-- **auxDivBN**: 
+- **auxSomaBN**: função que calcula verdadeiramente o valor da soma, a partir dos argumentos invertidos (algarismos das unidades à cabeça das listas de algarismos).
+- **auxSubBN**: função que calcula verdadeiramente o valor da diferença, a partir dos argumentos invertidos.
+- **auxMulBN**: função que calcula verdadeiramente o valor da multiplicação, a partir dos argumentos invertidos.
+- **auxCarryBN**: função que auxilia o cálculo em carryBN, tendo em conta o valor do carry a ser transportado para o conjunto de algarismos de ordem seguinte.
+- **carryBN**: função que separa uma lista de números numa lista de algarismos de um BigNumber (1 único algarismo por elemento da lista).
+- **carryPairBN**: função com o mesmo objetivo de carryBN, mas aplicada a um par de BigNumber's.
+- **auxDivBN**: função que verifica se o dividendo é maior ou igual ao divisor. Se sim, chama recursivamente a mesma função com o dividendo e o quociente "atualizados". Caso contrário, chama carryBN para fazer a separação em algarismos.
 
 ## Estratégias utilizadas na implementação das funções da alínea 2
 
 Seguindo a ordem do enunciado, a nossa função **scanner** recebe uma string e a primeira verificação que faz é confirmar que o primeiro caractere dessa string é ou não o sinal "-". Se for, vai ser construído um BigNumber negativo com a lista de algarismos que vão sendo lidos (usando a função map), mas a string a ser usada no map precisa da remoção do caractere "-". Caso não tenha esse caractere, não precisa desta remoção e apenas cria um BigNumber positivo usando a função map com a string inicial.
 
-A nossa função output é provavelmente a mais trivial em todo o nosso projeto:
+A nossa função **output** é provavelmente a mais trivial em todo o nosso projeto:
 - caso seja dado como argumento um BigNumber positivo, usamos a função concatMap, que percorre a lista de algarismos e concatena-os numa string através da função show
 - caso o argumento seja um BigNumber negativo, apenas concatena um sinal "-" antes da mesma chamada à função concatMap.
 
 (A partir deste momento vou abreviar BigNumber como BN para simplificar tanto a escrita como a leitura)
 
-Para o cálculo da soma e da subtração, usamos estas pequenas equivalências para nos facilitar os cálculos: apenas caso os dois argumentos sejam positivos o programa vai prosseguir com o cálculo, caso contrário vai adaptar o sinal dos argumentos e/ou do resultado e chamar novamente um possível caso de cálculo.
+Para o cálculo da **soma**, usamos estas pequenas equivalências para nos facilitar os cálculos: apenas caso os dois argumentos sejam positivos o programa vai prosseguir com o cálculo, caso contrário vai adaptar o sinal dos argumentos e/ou do resultado e chamar novamente um possível caso de cálculo.
 
 Por exemplo, no caso da soma:
 - (+) + (+) = (+) -> Neste caso, o programa vai prosseguir com o cálculo;
@@ -154,21 +154,55 @@ Por exemplo, no caso da soma:
 - (-) + (+) = (+) - (+) -> Caso o 1º argumento seja negativo, é equivalente fazer a subtração de ambos os argumentos positivos na ordem inversa;
 - (-) + (-) -> - ((+) + (+)) -> Caso ambos sejam negativos, é equivalente realizar a soma com ambos positivos e mudar o sinal no final.
 
-A mesma lógica é usada na subtração (por exemplo, no caso de 1 BN ser negativo optamos por fazer uma soma dos dois BN's).
+A mesma lógica é usada na **subtração** (por exemplo, no caso de 1 BN ser negativo optamos por fazer uma soma dos dois BN's).
 
-Para o caso da multiplicação, não há esse problema: apenas precisamos de fazer o cálculo e escolher o sinal correto para o resultado. TODO:
+Para o caso da **multiplicação**, não há esse problema: apenas precisamos de fazer o cálculo e escolher o sinal correto para o resultado. TODO:
 TODO: Multiplicação
 
-Na divisão, a estratégia é semelhante às anteriores, também com o caso especial da divisão por zero, que retorna "Exception: Infinity".
+Na **divisão**, a estratégia é semelhante às anteriores, também com o caso especial da divisão por zero, que retorna "Exception: Infinity".
 
 Para o verdadeiro cálculo da divisão (auxDivBN), começamos por verificar se o primeiro argumento é maior que o segundo. Se assim for, chamamos novamente a função auxDivBN com o dividendo atualizado (valor de a substraído por b), com o divisor b (mantém-se o mesmo, obviamente) e com o quociente incrementado por 1. Isto é feito recursivamente até que o divisor é maior que o dividendo, retornando o quociente naquele momento e o resto (dividendo naquele momento).
 
-Para corrigir o tratamento de restos com 2 dígitos ou mais, temos as funções **carryBN** e **carryPairBN** (semelhante à primeira, apenas aplica carryBN a um par de BN).
-
 ## Resposta à alínea 4
 
-- Int -> Int
-- Integer -> Integer
-- BigNumber -> BigNumber
+Para a resposta a esta alínea, usamos as funções fibListaInfinita e fibListaInfinitaBN para analisar resultados, uma vez que são as mais eficientes em tempos de execução.
 
-TODO: eu trato disto ou dp de almoço ou dp de jantar
+### (Int -> Int)
+4660046610375530309
+- fibListaInfinita 92 -> 7540113804746346429
+- fibListaInfinita 93 -> -6246583658587674878
+
+### (Integer -> Integer)
+- fibListaInfinita 92 -> 7540113804746346429
+- fibListaInfinita 93 -> 12200160415121876738
+
+### (BigNumber -> BigNumber)
+- fibListaInfinitaBN (Positive [9,2]) -> Positive [7,5,4,0,1,1,3,8,0,4,7,4,6,3,4,6,4,2,9]
+- fibListaInfinitaBN (Positive [9,3]) -> Positive [1,2,2,0,0,1,6,0,4,1,5,1,2,1,8,7,6,7,3,8]
+
+Rapidamente percebemos que algo acontece com Int que não acontece com Integer nem com BigNumber: overflow.
+Fizemos alguns testes para perceber qual era o limite e rapidamente chegamos aos limites que um Int suporta. Bastou compilar uma função **somar** para, ao correr, recebermos um *warning* sobre os limites caso esse limite fosse excedido:
+```haskell
+somar :: Int -> Int -> Int
+somar a b = a + b
+```
+- fibListaInfinita 91
+  - 4660046610375530309
+- fibListaInfinita 92
+  - 7540113804746346429
+- fibListaInfinita 93
+  - -6246583658587674878
+- somar 9999999999999999999 0
+```shell
+<interactive>:6:7: warning: [-Woverflowed-literals]
+    Literal 9999999999999999999 is out of the Int range -9223372036854775808..9223372036854775807
+-8446744073709551617
+```
+
+Encontrado o problema: o tipo Int em Haskell só aceita valores desde -9223372036854775808 (-2^63) até 9223372036854775807 (2^63 -1).
+
+Com testes mais elaborados e alguma pesquisa, chegamos à conclusão que o tipo Integer não tem qualquer limite como o Int, apenas o limite da memória. 
+
+A criação do módulo BigNumber também resolve o problema do limite do Int, uma vez que cada elemento da lista de algarismos tem apenas 1 dígito e que não há qualquer limite para o número de elementos de uma lista.
+
+Concluimos assim que o uso de Integer ou de BigNumber no nosso programa é indiferente (no que toca a comparar resultados, porque o formato é obviamente diferente), uma vez que ambos aceitam inputs de índices extremamente altos sem que ocorra overflow (têm apenas como limite a memória física). O uso de Int só é viável se quisermos trabalhar com valores entre (-2^63, 2^63-1).
