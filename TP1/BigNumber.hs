@@ -1,7 +1,7 @@
 module BigNumber (BigNumber (..),
     scanner, output,
     somaBN, auxSomaBN, subBN, auxSubBN, 
-    --mulBN, auxMulBN,
+    mulBN, auxMulBN,
     divBN, auxDivBN, carryBN, auxCarryBN, carryPairBN,
     safeDivBN,
     removerZerosEsquerdaBN, mudarSinalBN, mudarSinalDivBN,
@@ -123,9 +123,27 @@ subBN (Positive a) (Positive b)
     | maiorBN (Positive b) (Positive a) = mudarSinalBN (subBN (Positive b) (Positive a))
     | otherwise = Positive [0]
 
--- -- 2.6. mulBN TODO:
--- mulBN :: BigNumber -> BigNumber -> BigNumber
--- mulBN a b = a
+-- -- 2.6. mulBN 
+adicionarZerosBN :: BigNumber -> Int -> BigNumber
+adicionarZerosBN (Positive a) n = Positive (a ++ map (*0) [1..n])
+
+auxMulBN :: BigNumber -> BigNumber -> BigNumber
+auxMulBN (Positive a) (Positive [x]) = carryBN ( Positive (map (* x) a) ) 
+auxMulBN (Positive a) (Positive (x:xs)) = 
+    somaBN 
+        (adicionarZerosBN 
+            ( carryBN ( Positive (map (* x) a) ) )
+            (length xs)
+        )
+        (auxMulBN (Positive a) (Positive xs) )
+
+mulBN :: BigNumber -> BigNumber -> BigNumber
+mulBN (Negative a) (Negative b) = mulBN (Positive a) (Positive b)
+mulBN (Negative a) (Positive b) = mudarSinalBN (mulBN (Positive a) (Positive b))
+mulBN (Positive a) (Negative b) = mudarSinalBN (mulBN (Positive a) (Positive b))
+mulBN (Positive a) (Positive b)
+    | maiorBN (Positive b) (Positive a) = mulBN (Positive b) (Positive a)
+    | otherwise = auxMulBN (Positive a) (Positive b)
 
 -- 2.7. divBN
 auxCarryBN :: BigNumber -> Int -> BigNumber
