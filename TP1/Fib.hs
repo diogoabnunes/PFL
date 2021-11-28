@@ -20,7 +20,7 @@ fibListaInfinita n = fibs !! n
 
 -- fibRecBN
 fibRecBN :: BigNumber -> BigNumber
-fibRecBN (Negative a) = error "There is no negative index"
+fibRecBN (Negative n) = error "There is no negative index"
 fibRecBN (Positive [0]) = Positive [0]
 fibRecBN (Positive [1]) = Positive [1]
 fibRecBN (Positive n) = somaBN
@@ -31,6 +31,7 @@ fibRecBN (Positive n) = somaBN
 fibsBN :: [BigNumber]
 fibsBN = Positive [0] : Positive [1] : zipWith somaBN fibsBN (tail fibsBN)
 
+-- indexAtBN: Equivalente ao uso de !! com inteiros
 indexAtBN :: [BigNumber] -> BigNumber -> BigNumber
 indexAtBN (x:xs) n
     | maiorBN n (Positive [0]) = indexAtBN xs (subBN n (Positive [1]))

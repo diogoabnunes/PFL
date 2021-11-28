@@ -8,6 +8,13 @@ Trabalho realizado por:
 
 ## Descrição de casos de teste para todas as funções
 
+Na nossa implementação, um BigNumber é composto por:
+- *Positive* (se for positivo) ou *Negative* (se for negativo);
+- Lista de algarismos do número em questão.
+```haskell
+data BigNumber = Positive [Int] | Negative [Int] deriving (Show)
+```
+
 ### Fib.hs
 | função | arg | resultado |
 | -- | -- | -- |
@@ -46,10 +53,8 @@ Funções pedidas:
 | subBN | (Negative [1,2,3]) | (Positive [4,5,6]) | Negative [5,7,9] |
 | subBN | (Negative [1,2,3]) | (Negative [4,5,6]) | Positive [3,3,3] |
 | -- | -- | -- | -- |
-| mulBN | (Positive [1,2,3]) | (Positive [4,5,6]) | TODO:  |
-| mulBN | (Positive [1,2,3]) | (Negative [4,5,6]) | TODO:  |
-| mulBN | (Negative [1,2,3]) | (Positive [4,5,6]) | TODO:  |
-| mulBN | (Negative [1,2,3]) | (Negative [4,5,6]) | TODO:  |
+| mulBN | (Positive [1,2,3]) | (Positive [4,5,6]) | Positive [1,5,1,2,9] |
+| mulBN | (Positive [1,2,3]) | (Negative [4,5,6]) | Negative [1,5,1,2,9] |
 | -- | -- | -- | -- |
 | divBN | (Positive [1,2,0]) | (Positive [1,0,0]) | (Positive [1],Positive [2,0]) |
 | divBN | (Positive [1,2,0]) | (Negative [1,0,0]) | (Negative [1],Negative [2,0]) |
@@ -79,63 +84,122 @@ Funções auxiliares de 2 argumentos:
 | removeBN | "-123" | '-' | "123" |
 | appendBN | 1 | (Positive [2,3,4]) | Positive [1,2,3,4] |
 
-
 ## Explicação sucinta do funcionamento de cada função
 
-Na nossa implementação, um BigNumber é composto por:
-- *Positive* (se for positivo) ou *Negative* (se for negativo);
-- Lista de algarismos do número em questão.
-```haskell
-data BigNumber = Positive [Int] | Negative [Int] deriving (Show)
-```
+### Fib.hs
 
-No ficheiro **Fib.hs**, todas as funções pedidas têm o resultado esperado (o número de Fibonacci no índice passado por argumento). As listas infinitas criadas para as alíneas 1. e 3. foram feitas com o recurso à função *zipWith*. Temos ainda uma função auxiliar *indexAtBN*, que, tal como o nome indica, retorna o índice de um dado elemento (BigNumber) numa lista (de BigNumber's). Nas chamadas às funções de Fibonacci, caso coloquemos como input um BigNumber negativo, o resultado é "Exception: There is no negative index".
+#### Funções pedidas
 
-No ficheiro **BigNumber.hs**, as operações são sempre realizadas na função aux\<Operação>BN, com exceção da divisão (como o cálculo é mais complexo, temos ainda as funções carryBN, auxCarryBN e carryPairBN para nos ajudar no mesmo), onde é tratado o problema do carry.
+- **fibRec**: Função recursiva que tem um número "n" como argumento e calcula o n-ésimo número de Fibonacci.
+- **fibLista**: Função que tem um número "n" como argumento e retorna o n-ésimo número de Fibonacci usando uma lista de resultados parciais (programação dinâmica).
+- **fibListaInfinita**: Função que tem um número "n" como argumento e retorna o n-ésimo número de Fibonacci numa lista infinita com todos os números de Fibonacci (fibs).
+- **fibRecBN**: Função recursiva que tem um BigNumber "n" como argumento e calcula o n-ésimo número de Fibonacci.
+- **fibListaBN**: Função que tem um BigNumber "n" como argumento e calcula o n-ésimo número de Fibonacci usando uma lista de resultados parciais (progração dinãmica).
+- **fibListaInfinitaBN**: Função que tem um BigNumber "n" como argumento e retorna o n-ésimo número de Fibonacci numa lista infinita com todos os números (BigNumber) de Fibonacci (fibsBN).
 
-As funções do enunciado limitam-se a "ver" o sinal dos operadores e a chamar a respetiva operação:
-- caso sejam 2 operadores positivos, a função auxiliar respetiva é chamada para efetuar o cálculo;
-- caso contrário, mudam-se os sinais necessários e chama-se uma operação equivalente para realizar o cálculo.
+#### Funções auxiliares
 
-Tal como fui sugerido no enunciado, o cálculo é feito com 2 listas na ordem inversa, começando pelo cálculo do algarismo das unidades, das dezenas, e por aí adiante.
+- **fibs**: Função que cria uma lista infinita com os números de Fibonacci.
+- **fibsBN**: Função que cria uma lista infinita com os números (BigNumber) de Fibonacci.
+- **indexAtBN**: Função que retorna o n-ésimo número (BigNumber) numa lista (de BigNumber's). Equivalente ao uso de (!!) com inteiros.
 
-Na função pedida na alínea 5, limitamo-nos a verificar se o denominador é 0: se for, retorna *Nothing*, caso contrário, chama a função da divisão da alínea 2 dentro de *Just* (Just (divBN a b)). Apesar de não ter sido pedido, a nossa função divBN também não permite a divisão por zero, retornando, nesse caso, uma exceção (Exception: Infinity).
+### BigNumber.hs
 
-Temos ainda mais 7 funções auxiliares:
-- removerZerosEsquerdaBN: remoção dos zeros iniciais ("à esquerda") de um BigNumber;
-- mudarSinalBN: mudança do prefixo de sinal de um BigNumber;
-- mudarSinalDivBN: mudança de sinal dos 2 elementos de um par de BigNumber's (usado para divBN onde um dos elementos é negativo);
-- maiorBN (e auxMaiorBN): função que retorna True se um BigNumber for maior que outro;
-- removeBN: remoção de um elemento/caractere de uma lista/string (usado no scanner, para remover o sinal "menos" numa string);
-- appendBN: função a:b mas adaptada a BigNumber's (para ter em conta o prefixo de sinal);
-- reverseBN: função reverse mas adaptada a BigNumber's (para ter em conta o prefixo de sinal);
+#### Funções pedidas
+
+- **scanner**: função que recebe uma string e retorna um BigNumber;
+- **output**: função que recebe um BigNumber e retorna uma string;
+- **somaBN**: função que recebe 2 BigNumber's e retorna a sua soma;
+- **subBN**: função que recebe 2 BigNumber's e retorna a sua diferença;
+- **mulBN**: função que recebe 2 BigNumber's e retorna a sua multiplicação;
+- **divBN**: função que recebe 2 BigNumber's e retorna um tuplo constituído por quociente e resto;
+- **safeDivBN**: função equivalente a divBN mas capaz de detetar divisões por zero (retornando Nothing).
+
+#### Funções auxiliares
+
+- **removerZerosEsquerdaBN**: remoção dos zeros iniciais ("à esquerda") de um BigNumber.
+- **mudarSinalBN**: mudança do prefixo de sinal de um BigNumber.
+- **mudarSinalDivBN**: mudança de sinal dos 2 elementos de um par de BigNumber's (usado para divBN onde um dos elementos é negativo).
+- **auxMaiorBN**: função que, dados 2 BN positivos, verifica qual deles é maior, tendo em conta o tamanho da lista e só depois o valor de cada algarismo.
+- **maiorBN**: função que retorna True se um BigNumber for maior que outro.
+- **removeBN**: remoção de um elemento/caractere de uma lista/string (usado no scanner, para remover o sinal "menos" numa string).
+- **appendBN**: função que dá *append* de um elemento a uma lista (função a:b mas adaptada a BigNumber's (para ter em conta o prefixo de sinal).
+- **reverseBN**: função que dá *reverse* à lista de algarismos de um BigNumber e preserva o sinal.
+- **auxSomaBN**: função que calcula verdadeiramente o valor da soma, a partir dos argumentos invertidos (algarismos das unidades à cabeça das listas de algarismos).
+- **auxSubBN**: função que calcula verdadeiramente o valor da diferença, a partir dos argumentos invertidos.
+- **auxMulBN**: função que calcula verdadeiramente o valor da multiplicação, a partir dos argumentos invertidos.
+- **auxCarryBN**: função que auxilia o cálculo em carryBN, tendo em conta o valor do carry a ser transportado para o conjunto de algarismos de ordem seguinte.
+- **carryBN**: função que separa uma lista de números numa lista de algarismos de um BigNumber (1 único algarismo por elemento da lista).
+- **carryPairBN**: função com o mesmo objetivo de carryBN, mas aplicada a um par de BigNumber's.
+- **auxDivBN**: função que verifica se o dividendo é maior ou igual ao divisor. Se sim, chama recursivamente a mesma função com o dividendo e o quociente "atualizados". Caso contrário, chama carryBN para fazer a separação em algarismos.
 
 ## Estratégias utilizadas na implementação das funções da alínea 2
 
-Seguindo a ordem do enunciado, a nossa função *scanner* recebe uma string e a primeira verificação que faz é confirmar que o primeiro caractere dessa string é ou não o sinal "-". Se for, vai ser construído um BigNumber negativo com a lista de algarismos que vão sendo lidos (usando a função map), mas a string a ser usada no map precisa da remoção do caractere "-". Caso não tenha esse caractere, não precisa desta remoção e apenas cria um BigNumber positivo usando a função map com a string inicial.
+Seguindo a ordem do enunciado, a nossa função **scanner** recebe uma string e a primeira verificação que faz é confirmar que o primeiro caractere dessa string é ou não o sinal "-". Se for, vai ser construído um BigNumber negativo com a lista de algarismos que vão sendo lidos (usando a função map), mas a string a ser usada no map precisa da remoção do caractere "-". Caso não tenha esse caractere, não precisa desta remoção e apenas cria um BigNumber positivo usando a função map com a string inicial.
 
-A nossa função output é provavelmente a mais trivial em todo o nosso projeto: caso seja dado como argumento um BigNumber positivo, usamos a função concatMap, que percorre a lista de algarismos e concatena-os numa string através da função show. Caso o argumento seja um BigNumber negativo, apenas concatena um sinal "-" antes da mesma chamada à função concatMap.
+A nossa função **output** é provavelmente a mais trivial em todo o nosso projeto:
+- caso seja dado como argumento um BigNumber positivo, usamos a função concatMap, que percorre a lista de algarismos e concatena-os numa string através da função show
+- caso o argumento seja um BigNumber negativo, apenas concatena um sinal "-" antes da mesma chamada à função concatMap.
 
-Tal como já foi aqui dito, as funções da alínea 2 limitam-se a verificar o sinal dos argumentos para chamar a respetiva operação que tem que fazer. 
+(A partir deste momento vou abreviar BigNumber como BN para simplificar tanto a escrita como a leitura)
 
-Pegando no exemplo da soma, podem acontecer 3 cenários:
-- 1 BigNumber positivo e 1 negativo: muda o sinal do BigNumber negativo e faz a respetiva subtração;
-- 2 BigNumber's negativos: muda o sinal de ambos e faz a respetiva soma, mudando novamente o sinal no fim da operação.
-- 2 BigNumber's positivos: inverte os BigNumber's e procede com o cálculo da soma;
+Para o cálculo da **soma**, usamos estas pequenas equivalências para nos facilitar os cálculos: apenas caso os dois argumentos sejam positivos o programa vai prosseguir com o cálculo, caso contrário vai adaptar o sinal dos argumentos e/ou do resultado e chamar novamente um possível caso de cálculo.
 
-Para o real cálculo da soma, temos a realçar o processo de Carry, onde na soma de 2 algarismos (mais o Carry anterior, se for o caso) for excedido o valor de 10, o valor do Carry passa 1 e chama recursivamente o cálculo dos algarismos da ordem seguinte.
+Por exemplo, no caso da soma:
+- (+) + (+) = (+) -> Neste caso, o programa vai prosseguir com o cálculo;
+- (+) + (-) = (+) - (+) -> Caso o 2º argumento seja negativo, é equivalente fazer a subtração de ambos os argumentos positivos;
+- (-) + (+) = (+) - (+) -> Caso o 1º argumento seja negativo, é equivalente fazer a subtração de ambos os argumentos positivos na ordem inversa;
+- (-) + (-) -> - ((+) + (+)) -> Caso ambos sejam negativos, é equivalente realizar a soma com ambos positivos e mudar o sinal no final.
 
-A estratégia usada na subtração é a mesma usada na soma, com o caso especial de ambos os BigNumber's serem iguais, retornando imediatamente [0].
+A mesma lógica é usada na **subtração** (por exemplo, no caso de 1 BN ser negativo optamos por fazer uma soma dos dois BN's).
 
+Para o caso da **multiplicação**, não há esse problema: apenas precisamos de fazer o cálculo e escolher o sinal correto para o resultado. TODO:
 TODO: Multiplicação
 
-Na divisão, a estratégia é semelhante às anteriores, também com o caso especial da divisão por zero, que retorna "Exception: Infinity". 
+Na **divisão**, a estratégia é semelhante às anteriores, também com o caso especial da divisão por zero, que retorna "Exception: Infinity".
+
 Para o verdadeiro cálculo da divisão (auxDivBN), começamos por verificar se o primeiro argumento é maior que o segundo. Se assim for, chamamos novamente a função auxDivBN com o dividendo atualizado (valor de a substraído por b), com o divisor b (mantém-se o mesmo, obviamente) e com o quociente incrementado por 1. Isto é feito recursivamente até que o divisor é maior que o dividendo, retornando o quociente naquele momento e o resto (dividendo naquele momento).
 
 ## Resposta à alínea 4
 
-- Int -> Int
-- Integer -> Integer
-- BigNumber -> BigNumber
+Para a resposta a esta alínea, usamos as funções fibListaInfinita e fibListaInfinitaBN para analisar resultados, uma vez que são as mais eficientes em tempos de execução.
 
-TODO: maybe tabelas com limit ranges?
+### (Int -> Int)
+4660046610375530309
+- fibListaInfinita 92 -> 7540113804746346429
+- fibListaInfinita 93 -> -6246583658587674878
+
+### (Integer -> Integer)
+- fibListaInfinita 92 -> 7540113804746346429
+- fibListaInfinita 93 -> 12200160415121876738
+
+### (BigNumber -> BigNumber)
+- fibListaInfinitaBN (Positive [9,2]) -> Positive [7,5,4,0,1,1,3,8,0,4,7,4,6,3,4,6,4,2,9]
+- fibListaInfinitaBN (Positive [9,3]) -> Positive [1,2,2,0,0,1,6,0,4,1,5,1,2,1,8,7,6,7,3,8]
+
+Rapidamente percebemos que algo acontece com Int que não acontece com Integer nem com BigNumber: overflow.
+Fizemos alguns testes para perceber qual era o limite e rapidamente chegamos aos limites que um Int suporta. Bastou compilar uma função **somar** para, ao correr, recebermos um *warning* sobre os limites caso esse limite fosse excedido:
+```haskell
+somar :: Int -> Int -> Int
+somar a b = a + b
+```
+- fibListaInfinita 91
+  - 4660046610375530309
+- fibListaInfinita 92
+  - 7540113804746346429
+- fibListaInfinita 93
+  - -6246583658587674878
+- somar 9999999999999999999 0
+```shell
+<interactive>:6:7: warning: [-Woverflowed-literals]
+    Literal 9999999999999999999 is out of the Int range -9223372036854775808..9223372036854775807
+-8446744073709551617
+```
+
+Encontrado o problema: o tipo Int em Haskell só aceita valores desde -9223372036854775808 (-2^63) até 9223372036854775807 (2^63 -1).
+
+Com testes mais elaborados e alguma pesquisa, chegamos à conclusão que o tipo Integer não tem qualquer limite como o Int, apenas o limite da memória. 
+
+A criação do módulo BigNumber também resolve o problema do limite do Int, uma vez que cada elemento da lista de algarismos tem apenas 1 dígito e que não há qualquer limite para o número de elementos de uma lista.
+
+Concluimos assim que o uso de Integer ou de BigNumber no nosso programa é indiferente (no que toca a comparar resultados, porque o formato é obviamente diferente), uma vez que ambos aceitam inputs de índices extremamente altos sem que ocorra overflow (têm apenas como limite a memória física). O uso de Int só é viável se quisermos trabalhar com valores entre (-2^63, 2^63-1).

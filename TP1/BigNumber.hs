@@ -44,7 +44,7 @@ maiorBN :: BigNumber -> BigNumber -> Bool
 maiorBN (Negative a) (Positive b) = False
 maiorBN (Positive a) (Negative b) = True
 maiorBN (Negative a) (Negative b) = maiorBN (Positive b) (Positive a)
-maiorBN (Positive a) (Positive b) = auxMaiorBN 
+maiorBN (Positive a) (Positive b) = auxMaiorBN
     (removerZerosEsquerdaBN (Positive a))
     (removerZerosEsquerdaBN (Positive b))
 
@@ -162,13 +162,13 @@ carryPairBN (xs, ys) = (carryBN xs, carryBN ys)
 
 auxDivBN :: BigNumber -> BigNumber -> Int -> (BigNumber, BigNumber)
 auxDivBN (Positive a) (Positive b) n
-    | maiorBN (Positive a) (Positive b) || a == b = 
+    | maiorBN (Positive a) (Positive b) || a == b =
         carryPairBN
             (auxDivBN
                 (subBN (Positive a) (Positive b))
                 (Positive b)
                 (n+1))
-    | otherwise = 
+    | otherwise =
         (carryBN (Positive [n]), carryBN (Positive a))
 
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
