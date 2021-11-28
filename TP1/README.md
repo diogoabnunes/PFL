@@ -71,6 +71,8 @@ Funções auxiliares de 1 argumento:
 | mudarSinalBN | (Positive [1,2,3]) | Negative [1,2,3] |
 | mudarSinalDivBN | (Positive [1,2,3],Positive [4,5,6]) | (Negative [1,2,3],Negative [4,5,6]) |
 | reverseBN | (Positive [1,2,3]) | Positive [3,2,1] |
+| carryBN | (Positive [1,12,1]) | Positive [2,2,1] |
+| carryBN | (Positive [9,87,6]) | Positive [1,7,7,6]
 
 Funções auxiliares de 2 argumentos:
 | função | arg1 | arg2 | resultado |
@@ -83,6 +85,7 @@ Funções auxiliares de 2 argumentos:
 | maiorBN | (Positive [1,2,3]) | (Positive [1,2,3]) | False |
 | removeBN | "-123" | '-' | "123" |
 | appendBN | 1 | (Positive [2,3,4]) | Positive [1,2,3,4] |
+| adicionarZerosBN | (Positive [1,2,3]) | 2 | Positive [1,2,3,0,0] |
 
 ## Explicação sucinta do funcionamento de cada função
 
@@ -127,8 +130,9 @@ Funções auxiliares de 2 argumentos:
 - **reverseBN**: função que dá *reverse* à lista de algarismos de um BigNumber e preserva o sinal.
 - **auxSomaBN**: função que calcula verdadeiramente o valor da soma, a partir dos argumentos invertidos (algarismos das unidades à cabeça das listas de algarismos).
 - **auxSubBN**: função que calcula verdadeiramente o valor da diferença, a partir dos argumentos invertidos.
+- **adicionarZerosBN**: função que adiciona zeros à direita para alterar a ordem de grandeza.
 - **auxMulBN**: função que calcula verdadeiramente o valor da multiplicação, a partir dos argumentos invertidos.
-- **auxCarryBN**: função que auxilia o cálculo em carryBN, tendo em conta o valor do carry a ser transportado para o conjunto de algarismos de ordem seguinte.
+- **auxCarryBN**: função que auxilia o cálculo em carryBN, tendo em conta o valor do carry a ser transportado para o conjunto de algarismos de ordem de grandeza seguinte.
 - **carryBN**: função que separa uma lista de números numa lista de algarismos de um BigNumber (1 único algarismo por elemento da lista).
 - **carryPairBN**: função com o mesmo objetivo de carryBN, mas aplicada a um par de BigNumber's.
 - **auxDivBN**: função que verifica se o dividendo é maior ou igual ao divisor. Se sim, chama recursivamente a mesma função com o dividendo e o quociente "atualizados". Caso contrário, chama carryBN para fazer a separação em algarismos.
@@ -153,8 +157,9 @@ Por exemplo, no caso da soma:
 
 A mesma lógica é usada na **subtração** (por exemplo, no caso de 1 BN ser negativo optamos por fazer uma soma dos dois BN's).
 
-Para o caso da **multiplicação**, não há esse problema: apenas precisamos de fazer o cálculo e escolher o sinal correto para o resultado. TODO:
-TODO: Multiplicação
+Para o caso da **multiplicação**, não há esse problema: apenas precisamos de fazer o cálculo e escolher o sinal correto para o resultado. 
+
+Para o verdadeiro cálculo da multiplicação (auxMulBN), começamos por verificar se o segundo argumento é apenas de tamanho 1. Se assim for, chamamos a função carryBN para a multiplicação dos elementos do primeiro argumento com o segundo. Caso contrário, é feita a soma desse mesmo carryBN, com os devidos zeros adicionados pela função *adicionarZerosBN*, com a chamada recursiva a auxMulBN com a restante lista de algarismos do segundo argumento.
 
 Na **divisão**, a estratégia é semelhante às anteriores, também com o caso especial da divisão por zero, que retorna "Exception: Infinity".
 

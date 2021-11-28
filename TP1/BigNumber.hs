@@ -1,7 +1,7 @@
 module BigNumber (BigNumber (..),
     scanner, output,
     somaBN, auxSomaBN, subBN, auxSubBN, 
-    mulBN, auxMulBN,
+    mulBN, auxMulBN, adicionarZerosBN,
     divBN, auxDivBN, carryBN, auxCarryBN, carryPairBN,
     safeDivBN,
     removerZerosEsquerdaBN, mudarSinalBN, mudarSinalDivBN,
