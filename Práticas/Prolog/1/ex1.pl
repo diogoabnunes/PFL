@@ -1,4 +1,4 @@
-cls :- write('\33\[2J').
+% 1.a
 
 male(frank).
 male(jay).
@@ -58,6 +58,7 @@ parent(haley,george).
 parent(dylan,poppy).
 parent(haley,poppy).
 
+son(X, Y) :- parent(Y, X).
 
 /*
 female(haley).
@@ -101,9 +102,3 @@ grandmother(X,_). -> dede,barb,claire
 wedding(jay,gloria,2008).
 wedding(jay,dede,1968).
 divorce(jay,dede,2003).
-
-wedding(X,Y,Z) :-
-    wedding(X,Y,DataW),
-    Z >= DataW,
-    divorce(X,Y,DataD),
-    Z < DataD.
