@@ -46,40 +46,95 @@ Ficam aqui 2 links com informação útil sobre Jostle:
 - [Board Game Peek](https://boardgamegeek.com/boardgame/68808/jostle)
 
 ## 4. Lógica do Jogo
-descrever (não basta copiar código fonte) o projeto e implementação da lógica do  jogo  em  Prolog.  O  predicado  de  início  de  jogo  deve  ser  play/0.  Esta  secção  deve  ter 
-informação sobre os seguintes tópicos (até 2400 palavras no total): 
+descrever (não basta copiar código fonte) o projeto e implementação da lógica do  jogo  em  Prolog.  O  predicado  de  início  de  jogo  deve  ser  play/0.  Esta  secção  deve  ter informação sobre os seguintes tópicos (até 2400 palavras no total): 
 
 ### 4.1. Representação interna do estado do jogo
-indicação de  como representam o  estado do jogo, incluindo tabuleiro (tipicamente usando lista de listas com diferentes átomos para as peças), jogador atual, e eventualmente peças capturadas e/ou ainda por jogar, ou outras informações que possam ser necessárias (dependendo do jogo). Deve incluir exemplos da representação  em  Prolog  de  estados  de  jogo  inicial,  intermédio  e  final,  e  indicação  do significado de cada átomo (ie., como representam as diferentes peças)
+
+O **tabuleiro** é representado por uma lista de listas, sendo cada lista uma linha do tabuleiro. Durante o jogo, cada elemento dessa lista pode ter 3 valores:
+- `0` representa uma posição vazia;
+- `A` representa uma posição ocupada por uma peça do jogador Azul;
+- `V` representa uma posição ocupada por uma peça do jogador Vermelho.
+
+Todos os jogos começam com a mesma disposição de peças:
+```prolog
+[
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,V,A,V,A,V,A,0,0],
+    [0,0,A,V,A,V,A,V,0,0],
+    [0,0,V,A,0,0,V,A,0,0],
+    [0,0,A,V,0,0,A,V,0,0],
+    [0,0,V,A,V,A,V,A,0,0],
+    [0,0,A,V,A,V,A,V,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]
+]
+```
+
+Um possível estado intermédio de jogo é o seguinte:
+```prolog
+[
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,V,V,A,V,A,A,0,0],
+    [0,0,A,A,A,V,V,0,0,0],
+    [0,0,A,V,0,0,V,0,A,0],
+    [0,A,V,V,V,A,V,V,0,0],
+    [0,0,V,0,0,A,0,A,0,0],
+    [0,A,V,A,A,A,0,0,0,0],
+    [0,0,0,0,0,V,0,V,0,0],
+    [0,0,0,0,0,0,0,0,0,0]
+]
+```
+
+Um possível estado final de jogo, em que o jogador Azul não consegue realizar nenhuma jogada válida (sendo o vencedor o jogador Vermelho), é o seguinte:
+```prolog
+[
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,V,0,V,0,0,0,0],
+    [0,0,V,0,A,0,A,A,0,0],
+    [0,A,0,A,A,V,V,0,0,0],
+    [0,A,0,0,0,V,V,0,A,0],
+    [0,A,V,V,V,A,V,V,0,0],
+    [0,A,V,0,0,A,A,0,0,0],
+    [0,0,V,A,A,A,0,0,0,0],
+    [0,0,0,0,0,V,V,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]
+]
+```
+
+O jogador pode ser:
+- `Player`, quando for a vez de um humano.
+- `Bot`, quando for a vez do computador realizar uma jogada.
 
 ### 4.2. Visualização do estado de jogo
-descrição da implementação do predicado de visualização do estado de jogo. Pode incluir informação sobre o sistema de menus criado, assim como interação  com  o  utilizador,  incluindo  formas  de  validação  de entrada.  O  predicado  de visualização deverá chamar-se display_game(+GameState), recebendo o estado de jogo atual (que inclui o jogador que efetuará a próxima jogada). Serão valorizadas visualizações apelativas  e  intuitivas.  Serão  também  valorizadas  representações  de  estado  de  jogo  e implementação  de  predicados  de  visualização  flexíveis,  por  exemplo,  funcionando  para qualquer  tamanho  de  tabuleiro,  usando  um  predicado  initial_state(+Size,  -GameState) que recebe o tamanho do tabuleiro como argumento e devolve o estado inicial do jogo.
+descrição da implementação do predicado de visualização do estado de jogo. Pode incluir informação sobre o sistema de menus criado, assim como interação com o utilizador, incluindo formas de validação de entrada. O predicado de visualização deverá chamar-se display_game(+GameState), recebendo o estado de jogo atual (que inclui o jogador que efetuará a próxima jogada). Serão valorizadas visualizações apelativas e intuitivas.
 
 ### 4.3. Execução de Jogadas
-Validação  e  execução  de  uma  jogada,  obtendo  o  novo  estado  do jogo. O predicado deve chamar-se move(+GameState, +Move, -NewGameState).
+Validação e execução de uma jogada, obtendo o novo estado do jogo. O predicado deve chamar-se move(+GameState, +Move, -NewGameState).
 
 ### 4.4. Final do Jogo
 Verificação da situação de fim do jogo, com identificação do vencedor. O predicado deve chamar-se game_over(+GameState, -Winner).
 
 ### 4.5. Lista de jogadas válidas
-Obtenção  de  lista  com  jogadas  possíveis.  O  predicado  deve chamar-se valid_moves(+GameState, -ListOfMoves). 
+Obtenção de lista com jogadas possíveis. O predicado deve chamar-se valid_moves(+GameState, -ListOfMoves). 
 
 ### 4.6. Avaliação do Estado do Jogo (extra)
 Forma(s) de avaliação do estado do jogo do ponto de vista de um jogador, quantificada através do predicado value(+GameState, +Player, -Value).
 
 ### 4.7. Jogada do Computador (extra)
-Escolha da jogada a  efetuar pelo  computador, dependendo do nível de dificuldade, através de um predicado choose_move(+GameState, +Level, -Move). O nível 1 deverá devolver uma jogada válida aleatória. O nível 2 deverá devolver a melhor jogada no momento (algoritmo míope), tendo em conta a avaliação do estado de jogo.
+Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade, através de um predicado choose_move(+GameState, +Level, -Move). O nível 1 deverá devolver uma jogada válida aleatória. O nível 2 deverá devolver a melhor jogada no momento (algoritmo míope), tendo em conta a avaliação do estado de jogo.
 
 \*Nota: a implementação  do predicado de avaliação do tabuleiro  e do nível  2  de  dificuldade é 
 opcional, sendo contabilizado como uma funcionalidade extra [valorização: até +1 valor].
 
 ## Conclusões
-Conclusões  do  trabalho,  incluindo  limitações  do  trabalho  desenvolvido  (known issues), assim como possíveis melhorias identificadas (roadmap). (até 250 palavras)
+Conclusões do trabalho, incluindo limitações do trabalho desenvolvido (known issues), assim como possíveis melhorias identificadas (roadmap). (até 250 palavras)
 
 ## Bibliografia
- Listagem  de  livros,  artigos,  páginas  Web  e  outros  recursos  usados  durante  o desenvolvimento do trabalho.
+Listagem de livros, artigos, páginas Web e outros recursos usados durante o desenvolvimento do trabalho.
 
 
 O código-fonte desenvolvido deverá estar dentro de um diretório denominado src, e deverá estar devidamente comentado. O predicado principal play/0 deve dar acesso ao menu de jogo, que permita configurar o tipo de jogo (H/H, H/PC, PC/H, PC/PC), nível(eis) de dificuldade a usar no(s) jogador(es) artificial(ais), entre outros possíveis parâmetros, e iniciar o ciclo de jogo. 
 
-Pode ainda incluir uma ou mais imagens ilustrativas da execução do jogo, mostrando um estado de jogo inicial, e possíveis estados intermédio e final (estes estados de jogo podem ser codificados diretamente  no  ficheiro  de  código  para  esta  demonstração  da  visualização  do  estado  de  jogo, usando predicados semelhantes ao predicado initial_state/2).
+Pode ainda incluir uma ou mais imagens ilustrativas da execução do jogo, mostrando um estado de jogo inicial, e possíveis estados intermédio e final (estes estados de jogo podem ser codificados diretamente no ficheiro de código para esta demonstração da visualização do estado de jogo, usando predicados semelhantes ao predicado initial_state/2).
