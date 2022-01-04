@@ -32,6 +32,8 @@ game_pvp(Board, Player):-
     display_game(Board, Player),
     get_new_play_cell(Col, Row),
     veriify_owner(Board, Col, Row, Player),
+    get_checker_points(Board, Col, Row, Points),
+    write(Points),
     get_new_play_move(Move),
     veriify_move_choice(Board, Player, Move),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
