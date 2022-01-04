@@ -59,8 +59,6 @@ display_player(Player):-
 display_winner(Player):-
 	nl, format('                              WINNER Player:  ~w ', Player), nl, nl, nl.
 
-display_winner(0):-
-	nl, write('                                   TIED '), nl, nl, nl.
 
 printColumnIdentifiers:-
 	write('                                1 2 3 4 5 6 7 8 9 10').
@@ -105,8 +103,8 @@ not_implemented :-
     nl, write('--This mode is not available yet--'),
 	abort.
 
-valid_move :-
-    write('--valid choice--'), nl.
+valid :-
+    nl, write('--VALID--').
 
-not_valid_move :-
-    write('--not a valid choice, try again--'), nl, nl.
+not_valid :-
+    nl, write('--NOT VALID, TRY AGAIN--').
