@@ -31,13 +31,15 @@ init_game(Board,Player):-
 game_pvp(Board, Player):-
     display_game(Board, Player),
     get_new_play_cell(Col, Row),
-    veriify_owner(Board, Col, Row, Player),
+    verify_owner(Board, Col, Row, Player),
     get_checker_points(Board, Col, Row, Points),
-    write(Points),
     get_new_play_move(Move),
-    veriify_move_choice(Board, Player, Move),
+    verify_move_choice(Board, Player, Move),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
+    verify_available(Board, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
+    get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
+    Points < NewPoints,
     change_player(Player, Next),
     game_pvp(NewBoard, Next).
 

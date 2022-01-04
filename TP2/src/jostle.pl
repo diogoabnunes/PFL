@@ -1,21 +1,17 @@
 
 :- [board].
 
-%veriify_owner(+Board, +Col, +Row, +Player)
-veriify_owner(Board, Col, Row, Player) :-
+%verify_owner(+Board, +Col, +Row, +Player)
+verify_owner(Board, Col, Row, Player) :-
     get_cell_value(Board, Col, Row, Value),   
-    Value == Player,!.
+    Value == Player.
 
-%veriify_move_choice(+Board, +Player, +Move):-
-veriify_move_choice(_, _, Move):-
+%verify_move_choice(+Move):-
+verify_move_choice(Move):-
    ( Move == 1 ; 
     Move == 2; 
     Move == 3; 
     Move == 4) ,!.
-
-veriify_move_choice(Board, Player, Move):-
-    Move == 5, !,nl, 
-    game_pvp(Board, Player).
 
 %get_cell_after_move(+Col, +Row, +Move, -Mcol, -Mrow)
 get_cell_after_move(Col, Row, Move, Mcol, Row):-
@@ -31,23 +27,17 @@ get_cell_after_move(Col, Row, Move, Mcol, Row):-
 get_cell_after_move(Col, Row, Move, Col, Mrow):-
     Move == 3, !,
     Mrow is Row - 1,
-    Mrow =< 10.
+    Mrow >= 0.
 
 get_cell_after_move(Col, Row, Move, Col, Mrow):-
-    Move == 4, !,
+    Move == 4,
     Mrow is Row + 1,
-    Mrow =< 10,!.
+    Mrow =< 10.
     
 %get_newBoard(+Board, +Player, +Col, +Row, +Mcol, +Mrow, -NewBoard).
 get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard):-
     replace_value_matrix(Board, Col, Row, ' ', TempBoard),
     replace_value_matrix(TempBoard, Mcol, Mrow, Player, NewBoard).
-
-%change_player(+Player, -Next).
-change_player(Player, 'A'):-
-    Player == 'V'.
-change_player(Player, 'V'):-
-    Player == 'A'.
 
 %get_checker_points(+Board, +Col, +Row, -Points)
 get_checker_points(Board, Col, Row, Points):-
@@ -56,7 +46,7 @@ get_checker_points(Board, Col, Row, Points):-
 
 % todos os vizinhos já foram contabilizados  
 get_checker_points(_, _, _, _, TempPoints, TempPoints, Move):-
-    Move == 5.
+    Move == 5, !.
 
 % vizinhos 1 a 4
 get_checker_points(Board, Col, Row, Value, Points, TempPoints, Move):-
@@ -81,3 +71,13 @@ add_connection_points(_, NeighborVal, TempPoints, TempPoints):-
 
 add_connection_points(_, _, TempPoints, NeighborPoints):-
     NeighborPoints is TempPoints - 1.
+
+%verify_points(+Points, +NewPoints).
+verify_points(Points, NewPoints):-
+    NewPoints > Points.
+
+%change_player(+Player, -Next).
+change_player(Player, 'A'):-
+    Player == 'V'.
+change_player(Player, 'V'):-
+    Player == 'A'.

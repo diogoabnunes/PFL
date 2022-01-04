@@ -1,5 +1,5 @@
-%veriify_available(+Board, +Col, +Row)
-veriify_available(Board, Col, Row) :-
+%verify_available(+Board, +Col, +Row)
+verify_available(Board, Col, Row) :-
     get_cell_value(Board, Col, Row, Value), !,
     Value == ' '.
 
