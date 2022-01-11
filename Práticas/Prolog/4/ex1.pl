@@ -1,3 +1,5 @@
+:- dynamic male/1, female/1, parent/2.
+
 male(frank). male(jay). male(javier).
 male(merle). male(phil).
 male(mitchell). male(joe).
@@ -28,35 +30,26 @@ parent(pameron,calhoun). parent(bo,calhoun).
 parent(dylan,george). parent(haley,george).
 parent(dylan,poppy). parent(haley,poppy).
 
-children(Person, Children) :- findall(Child, parent(Person, Child), Children).
+add_person_aux(male, X) :- assert(male(X)).
+add_person_aux(female, Y) :- assert(female(Y)).
 
-children_of([], []).
-children_of([Person|People], [Person-Children|Pairs]) :-
-    children(Person, Children),
-    children_of(People, Pairs).
+add_person :-
+    write('Insert gender (male or female):'), nl,
+    read(Gender),
+    write('Insert name:'), nl,
+    read(Name),
+    add_person_aux(Gender, Name).
 
-connected(P1, P2) :- parent(P1, P2); parent(P2, P1).
+add_parents(Person) :-
+    write('Parents of '), write(Person), write(':'), nl,
+    read(Parent1),
+    read(Parent2),
+    assert(parent(Parent1, Person)),
+    assert(parent(Parent2, Person)).
 
-family(F) :- setof(Person, Relative^connected(Person, Relative), F).
-
-couple(P1-P2) :-
-    parent(P1, Child),
-    parent(P2, Child),
-    P1 \= P2.
-
-couples(Couples) :- setof(Couple, couple(Couple), Couples).
-
-spouse_children(Person, Spouse/Children) :-
-    couple(Person-Spouse),
-    children(Person, Children).
-
-immediate_family(Person, Parents-SC) :-
-    findall(Parent, parent(Parent, Person), Parents),
-    spouse_children(Person, SC).
-
-parent_of_two(Parent) :-
-    setof(Child, parent(Parent, Child), Children),
-    length(Children, NChildren),
-    NChildren >= 2.
-
-parents_of_two(Parents) :- setof(Parent, parent_of_two(Parent), Parents).
+remove_person :-
+    write('Person to remove:'), nl,
+    read(Person),
+    retractall(male(Person)),
+    retractall(parent(Person, _)),
+    retractall(parent(_, Person)).
