@@ -15,20 +15,24 @@ flight(london, madrid, iberia, ib3163, 1030, 140).
 flight(porto, frankfurt, lufthansa, lh1177, 1230, 165).
 
 /* Lista com todos os aeroportos na base de dados sem duplicados */
-get_airports :-
-    flight(A, B, _, _, _, _),
-    assert(airport(A)),
-    assert(airport(B)).
-
-get_all_nodes(ListOfAirports) :-
-    get_airports, !,
-    setof(Airport, airport(Airport), ListOfAirports).
+get_all_nodes(L) :-
+    setof(Orig, Dest^Comp^Code^Hour^Dur^flight(Orig,Dest,Comp,Code,Hour,Dur),L).
 
 /* Operadora com número de destinos mais diversificados */
+company_flights(Company, Len) :-
+    findall(Company, flight(_,_,Company,_,_,_), L),
+    length(L, Len).
 
+get_most_common(L,Company) :- get_most_common(L,0,_C,Company).
+
+get_most_common([],_,Comp,Comp) :- !.
+get_most_common([C-N|T], Num, Acc, Comp) :- 
+    (N > Num -> 
+        get_most_common(T,N,C,Comp) ; get_most_common(T,Num,Acc,Comp)).
 
 most_diversified(Company) :-
-    
+    setof(Comp-N, Dest^Orig^Code^Hour^Dur^(flight(Orig,Dest,Comp,Code,Hour,Dur), company_flights(Comp,N)),L),
+    get_most_common(L,Company).
 
 /* Lista com 1+ (códigos de) voos que permitam ligar Origin a Destination. 
    Pesquisa em profundidade, evitando ciclos */

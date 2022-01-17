@@ -30,26 +30,33 @@ parent(pameron,calhoun). parent(bo,calhoun).
 parent(dylan,george). parent(haley,george).
 parent(dylan,poppy). parent(haley,poppy).
 
-add_person_aux(male, X) :- assert(male(X)).
-add_person_aux(female, Y) :- assert(female(Y)).
+save_person(male, X) :- assert(male(X)).
+save_person(female, Y) :- assert(female(Y)).
 
 add_person :-
     write('Insert gender (male or female):'), nl,
     read(Gender),
     write('Insert name:'), nl,
     read(Name),
-    add_person_aux(Gender, Name).
+    save_person(Gender, Name).
 
 add_parents(Person) :-
     write('Parents of '), write(Person), write(':'), nl,
-    read(Parent1),
-    read(Parent2),
+    write('Parent 1: '), read(Parent1),
+    write('Parent 2: '), read(Parent2),
     assert(parent(Parent1, Person)),
     assert(parent(Parent2, Person)).
 
+remove_gender(Person) :-
+    male(Person),
+    retract(male(Person)).
+
+remove_gender(Person) :-
+    female(Person),
+    retract(female(Person)).
+
 remove_person :-
-    write('Person to remove:'), nl,
-    read(Person),
-    retractall(male(Person)),
+    write('Person to remove:'), read(Person),
+    remove_gender(Person),
     retractall(parent(Person, _)),
     retractall(parent(_, Person)).
