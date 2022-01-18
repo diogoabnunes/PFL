@@ -13,7 +13,7 @@
 
 ## 2. Instalação e Execução
 - Install and Execute SICStus
-- Consult ```jostle.pl``` file
+- Consult ```play.pl``` file
 - Type ```play.```
 - Play! :)
 

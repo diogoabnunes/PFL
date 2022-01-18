@@ -1,8 +1,11 @@
 :- [logic].
+:- [utils].
 
 play :- 
+    %repeat, 
     %menu_game_mode, nl,
-    %read(Choice),
+    %read_number(Choice),
+    %Choice < 4,
     %start(Choice).
     start(1).
 

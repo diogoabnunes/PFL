@@ -61,7 +61,7 @@ display_winner(Player):-
 
 
 printColumnIdentifiers:-
-	write('                                1 2 3 4 5 6 7 8 9 10').
+	write('                                a b c d e f g h i j').
 
 printHorizontalSeparator:-
 	write('                                ___________________ ').
@@ -93,8 +93,8 @@ printRowId(X):-
     format('                             ~w', X).
 
 display_game(Board, Player) :-
-	display_game_name, nl, nl,
- 	display_board(Board), 	
+	%display_game_name, nl, nl,
+ 	%display_board(Board), 	
     display_player(Player).
 
 
