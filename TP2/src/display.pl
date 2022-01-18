@@ -93,8 +93,8 @@ printRowId(X):-
     format('                             ~w', X).
 
 display_game(Board, Player) :-
-	%display_game_name, nl, nl,
- 	%display_board(Board), 	
+	display_game_name, nl, nl,
+ 	display_board(Board), 	
     display_player(Player).
 
 

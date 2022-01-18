@@ -16,7 +16,6 @@ get_new_play(IntCol, IntRow, Move):-
     write('Column: '), nl,
     read(ColC),
     code(ColC, IntCol),
-    write(IntCol),
     write('Row: '), nl,
     read(Row),
     IntRow is Row - 1,
@@ -27,7 +26,6 @@ get_new_play_cell(IntCol, IntRow):-
     write('Column: '), nl,
     read(ColC),
     code(ColC, IntCol),
-    write(IntCol),
     write('Row: '), nl,
     read(Row),
     IntRow is Row - 1.
