@@ -2,13 +2,12 @@
 :- [utils].
 
 play :- 
-    %repeat, 
-    %menu_game_mode, nl,
-    %read_number(Choice),
-    %Choice < 4,
-    %start(Choice).
-    start(1).
-
+    repeat, 
+    display_game_name,
+    menu_game_mode, nl,
+    read_number(Choice),
+    Choice < 4,
+    start(Choice).
 
 % game modes ---------------------------------------------
 start(Choice) :- 
@@ -18,11 +17,13 @@ start(Choice) :-
 
 start(Choice) :- 
     Choice == 2, !, 
-    not_implemented.
+    init_game(Board,Player),
+    game_pvc(Board, Player).
 
 start(Choice) :-
     Choice == 3, !,
-    not_implemented.
+    init_game(Board,Player),
+    game_cvc(Board, Player).
 
 start(Choice) :-
     Choice == 4,
@@ -31,3 +32,4 @@ start(Choice) :-
 start(_) :-
     nl, write('--INVALID INPUT--'), nl,
     play.
+
