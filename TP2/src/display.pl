@@ -32,44 +32,39 @@ mid_state([
     [0,0,0,0,0,0,0,0,0,0]
 ]).
 
-end_state([
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,V,0,V,0,0,0,0],
-    [0,0,V,0,A,0,A,A,0,0],
-    [0,A,0,A,A,V,V,0,0,0],
-    [0,A,0,0,0,V,V,0,A,0],
-    [0,A,V,V,V,A,V,V,0,0],
-    [0,A,V,0,0,A,A,0,0,0],
-    [0,0,V,A,A,A,0,0,0,0],
-    [0,0,0,0,0,V,V,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
-]).
-
 
 display_game_name :- nl,
-	write('                         _______                              '), nl,
-	write('                            |  ___   ___  __|__  |   ___      '), nl,    
-	write('                            | |   | |___    |    |  |___|     '), nl,
-	write('                        |__/  |___|  ___|   |    |  |___      '), nl,
+	write('                       _______                              '), nl,
+	write('                          |   ___    ___  __|__  |   ___      '), nl,    
+	write('                          |  /   \\  /___    |    |  /___|     '), nl,
+	write('                      \\___/  \\___/   ___/   |    |  \\___      '), nl,
+	nl.
+
+display_game_over :-
+	write('             ____                                ___                        '), nl,
+	write('            /        __     __  __    ___       /   \\          ___     __   '), nl,    
+	write('           |   __    __|  |/  |/  |  /___|     |     |  \\  /  /___|  |/     '), nl,
+	write('            \\____|  |__|  |   |   |  \\___       \\___/    \\/   \\___   |      '), nl,
 	nl.
 
 display_player(Player):-
 	format('     Player: ~w', Player), nl, nl, nl. 
 
 display_winner(Player):-
-	nl, format('                              WINNER Player:  ~w ', Player), nl, nl, nl.
+	nl, format('                               WINNER Player: ~w ', Player), nl, nl, nl.
 
+
+%display_board(+Board)
+display_board(Board):-
+   	printColumnIdentifiers, nl,
+    printHorizontalSeparator, nl,
+	print_matrix(Board).
 
 printColumnIdentifiers:-
 	write('                                1 2 3 4 5 6 7 8 9 10').
 
 printHorizontalSeparator:-
 	write('                                ___________________ ').
-
-display_board(Board):-
-   	printColumnIdentifiers, nl,
-    printHorizontalSeparator, nl,
-	print_matrix(Board).
 
 print_matrix(Board):-
     print_matrix(Board,1).
@@ -92,8 +87,9 @@ printRowId(X):-
 printRowId(X):- 
     format('                             ~w', X).
 
+%display_game(+Board, +Player) 
 display_game(Board, Player) :-
-	display_game_name, nl, nl,
+    nl,nl,
  	display_board(Board), 	
     display_player(Player).
 
