@@ -15,29 +15,48 @@ flight(london, madrid, iberia, ib3163, 1030, 140).
 flight(porto, frankfurt, lufthansa, lh1177, 1230, 165).
 
 /* Lista com todos os aeroportos na base de dados sem duplicados */
-get_all_nodes(L) :-
-    setof(Orig, Dest^Comp^Code^Hour^Dur^flight(Orig,Dest,Comp,Code,Hour,Dur),L).
+get_all_nodes(ListOfAirports) :-
+    setof(Airport,
+         (Or,Dest,Comp,Code,Hour,Dur)^(flight(Or, Dest, Comp, Code, Hour, Dur),
+            (Or=Airport; Dest=Airport)),
+         ListOfAirports).
 
-/* Operadora com número de destinos mais diversificados */
-company_flights(Company, Len) :-
-    findall(Company, flight(_,_,Company,_,_,_), L),
-    length(L, Len).
+% b)
 
-get_most_common(L,Company) :- get_most_common(L,0,_C,Company).
+score(Company, Score) :- 
+    setof(Destination, (Or, Code, Hour, Dur)^flight(Or, Destination, Company, Code, Hour, Dur), Destinations),
+    length(Destinations, Score).
 
-get_most_common([],_,Comp,Comp) :- !.
-get_most_common([C-N|T], Num, Acc, Comp) :- 
-    (N > Num -> 
-        get_most_common(T,N,C,Comp) ; get_most_common(T,Num,Acc,Comp)).
+most_diversified([Company], Company).
+most_diversified([Company | T], Company) :- 
+    most_diversified(T, NextBest),
+    score(Company, BestScore),
+    score(NextBest, NextBestScore),
+    BestScore >= NextBestScore.
+most_diversified([Competitor | T], Company) :- 
+    score(Competitor, CompScore),
+    score(Company, BestScore),
+    BestScore >= CompScore,
+    most_diversified(T, Company).
 
-most_diversified(Company) :-
-    setof(Comp-N, Dest^Orig^Code^Hour^Dur^(flight(Orig,Dest,Comp,Code,Hour,Dur), company_flights(Comp,N)),L),
-    get_most_common(L,Company).
+most_diversified(Company) :- 
+    setof(Company, (Or,Dest,Code,Hour,Dur)^flight(Or, Dest, Company, Code, Hour, Dur), Companies),
+    most_diversified(Companies, Company).
 
-/* Lista com 1+ (códigos de) voos que permitam ligar Origin a Destination. 
-   Pesquisa em profundidade, evitando ciclos */
-% find_flights(Origin, Destination, Flights).
+% c)
 
-/* Lista com 1+ (códigos de) voos que permitam ligar Origin a Destination. 
-   Pesquisa em largura, evitando ciclos */
-% find_flights_breadth(Origin, Destination, Flights).
+already_visited(Location, [Code | T]) :-
+    flight(_, Location, _, Code, _, _);
+    flight(Location, _, _, Code, _, _);
+    already_visited(Location, T).
+
+find_flights(Origin, Origin, Acc, Acc).
+find_flights(Origin, Destination, Acc, Flights) :- 
+    flight(Origin, Intermediate, _, FirstFlight, _, _),
+    \+ already_visited(Intermediate, Acc),
+    find_flights(Intermediate, Destination, [FirstFlight | Acc], Flights).
+
+
+find_flights(Origin, Destination, Flights) :- 
+    find_flights(Origin, Destination, [], Path),
+    reverse(Path, Flights).
