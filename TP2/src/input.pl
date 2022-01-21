@@ -13,11 +13,11 @@ code('i', 8).
 code('j', 9).
 
 get_new_play_cell(IntCol, IntRow):-
-    write('Column: '), nl,
+    write('Column (a-j): '), nl,
     read(Col),
     verify_col_choice(Col),
     code(Col, IntCol),
-    write('Row: '), nl,
+    write('Row (1-10): '), nl,
     read(Row),
     verify_row_choice(Row),
     IntRow is Row - 1.

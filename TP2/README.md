@@ -51,9 +51,9 @@ descrever (não basta copiar código fonte) o projeto e implementação da lógi
 ### 4.1. Representação interna do estado do jogo
 
 O **tabuleiro** é representado por uma lista de listas, sendo cada lista uma linha do tabuleiro. Durante o jogo, cada elemento dessa lista pode ter 3 valores:
-- `0` representa uma posição vazia;
-- `A` representa uma posição ocupada por uma peça do jogador Azul;
-- `V` representa uma posição ocupada por uma peça do jogador Vermelho.
+- ' ' representa uma posição vazia;
+- 'A' representa uma posição ocupada por uma peça do jogador Azul;
+- 'V' representa uma posição ocupada por uma peça do jogador Vermelho.
 
 Todos os jogos começam com a mesma disposição de peças:
 ```prolog

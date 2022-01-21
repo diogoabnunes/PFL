@@ -6,7 +6,7 @@ play :-
     display_game_name,
     menu_game_mode, nl,
     read_number(Choice),
-    Choice < 4,
+    Choice < 5,
     start(Choice).
 
 % game modes ---------------------------------------------
@@ -20,13 +20,18 @@ start(Choice) :-
     init_game(Board,Player),
     game_pvc(Board, Player).
 
+start(Choice) :- 
+    Choice == 3, !, 
+    init_game(Board,Player),
+    game_cvp(Board, Player).
+
 start(Choice) :-
-    Choice == 3, !,
+    Choice == 4, !,
     init_game(Board,Player),
     game_cvc(Board, Player).
 
 start(Choice) :-
-    Choice == 4,
+    Choice == 5,
     abort.
 
 start(_) :-

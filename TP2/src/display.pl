@@ -1,9 +1,3 @@
-/*
-- `0` representa uma posição vazia;
-- `A` representa uma peça do jogador Azul;
-- `V` representa uma peça do jogador Vermelho;
-*/
-
 clear :- write('\33\[2J').
 
 begin_state([
@@ -51,7 +45,7 @@ display_player(Player):-
 	format('     Player: ~w', Player), nl, nl, nl. 
 
 display_winner(Player):-
-	nl, format('                               WINNER Player: ~w ', Player), nl, nl, nl.
+	nl, format('                               WINNER: Player ~w ', Player), nl, nl, nl.
 
 
 %display_board(+Board)
