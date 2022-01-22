@@ -109,8 +109,8 @@ get_plays(Col, Row, Move,[[Col,Row,Move]|Tplays]):-
     get_next_possible_play(Col, Row, Move, NextCol, NextRow, NextMove),
     get_plays(NextCol, NextRow, NextMove, Tplays).
 
-%get_valid_plays(+Board, +Player, -Plays)
-get_valid_plays(Board, Player, Plays):-
+%valid_moves(+GameState, -ListOfMoves)
+valid_moves(Board-Player, Plays):-
     get_valid_plays(Board, Player, 0, 0, 1, Plays).
 
 % quando passa para a row 10 ja fica fora do tabuleiro 
@@ -126,8 +126,8 @@ get_valid_plays(Board, Player, Col, Row, Move, Tplays):-
     get_next_possible_play(Col, Row, Move, NextCol, NextRow, NextMove),
     get_valid_plays(Board, Player, NextCol, NextRow, NextMove,Tplays).
 
-%get_computer_plays(+Board, +Player, -Play)
-get_computer_plays(Board, Player, Play):-
+%choose_move(+GameState, +Level, -Move)
+choose_move(Board-Player, _, Play):-
     get_valid_plays(Board, Player, Plays),
     random_member(Play, Plays),
     print_computer_play(Play),nl.

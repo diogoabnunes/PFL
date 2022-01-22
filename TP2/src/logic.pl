@@ -74,7 +74,7 @@ game_pvc(Board, Player):-
 game_pvc(Board, Player):-
     Player == 'A',
     display_game(Board-Player),
-    get_computer_plays(Board, Player, [Col, Row, Move]),
+    choose_move(Board-Player, 1, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
@@ -99,7 +99,7 @@ game_cvp(Board, Player):-
 game_cvp(Board, Player):-
     Player == 'V',
     display_game(Board-Player),
-    get_computer_plays(Board, Player, [Col, Row, Move]),
+    choose_move(Board-Player, 1, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
@@ -113,7 +113,7 @@ game_cvp(Board, Player):-
 % Computer 1 vs. Computer 2 --------------------------------------------------------
 game_cvc(Board, Player):-
     display_game(Board-Player),
-    get_computer_plays(Board, Player, [Col, Row, Move]),
+    choose_move(Board-Player, 1, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
@@ -127,7 +127,7 @@ game_cvc(Board, Player):-
 % General ----------------------------------------------------------------------
 
 game_over(Board, Player):-
-    get_valid_plays(Board, Player, Plays), 
+    valid_moves(Board-Player, Plays), 
     game_over(Board, Player, Plays).
 
 game_over(Board, Player, []):-

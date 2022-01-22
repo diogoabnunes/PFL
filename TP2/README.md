@@ -118,19 +118,20 @@ O predicado de execução de jogada é move(+GameState, +Move, -NewGameState). G
 Dentro deste predicado, verificamos que a célula-destino está livre e que a jogada é válida, isto é, que o valor dessa peça aumenta. Caso isto não aconteça, a jogada não é realizada e é pedido um novo input ao mesmo jogador.
 
 ### 4.4. Final do Jogo
-Verificação da situação de fim do jogo, com identificação do vencedor. O predicado deve chamar-se game_over(+GameState, -Winner).
+Para verificar o final do jogo e anunciar o vencedor, nós usamos o predicado game_over(+Board, +Player). Como o jogo só acaba quando um jogador não consegue realizar nenhuma jogada válida (esse jogador é o que perde o jogo), antes de voltar ao início do ciclo de jogo, verificamos se existem ainda jogadas válidas para o jogador seguinte, chamando valid_moves, como vai ser explicado na secção seguinte. Se existirem, o ciclo continua; caso contrário, é apresentado o tabuleiro final e é enunciado o vencedor do jogo.
 
 ### 4.5. Lista de jogadas válidas
-Obtenção de lista com jogadas possíveis. O predicado deve chamar-se valid_moves(+GameState, -ListOfMoves). 
+O predicado valid_moves(+GameState, -ListOfMoves) vai devolver em ListOfMoves uma lista de listas com as jogadas que ainda são possíveis realizar pelo próximo jogador. GameState é constituído pelo Board e pelo Player e este predicado chama outro predicado (get_valid_plays) que vai percorrer todo o tabuleiro e colocar em ListOfMoves todas as jogadas que forem possíveis para o respetivo jogador. Cada lista de jogada possível é constituída por coluna, linha e direção do movimento que se pode realizar. Desta forma, uma mesma peça pode ter no máximo 4 movimentos possíveis, pelo que esta lista não enuncia apenas as peças que podem ser jogadas, mas também quais movimentos podem ser feitos. 
 
 ### 4.6. Avaliação do Estado do Jogo (extra)
+TODO: Worth it? Podíamos somar o valor das peças de cada jogador e imprimir os valores, mas um maior valor não significa estar mais perto da vitória, por isso não sei se faz sentido... 
+
 Forma(s) de avaliação do estado do jogo do ponto de vista de um jogador, quantificada através do predicado value(+GameState, +Player, -Value).
 
 ### 4.7. Jogada do Computador (extra)
-Escolha da jogada a efetuar pelo computador, dependendo do nível de dificuldade, através de um predicado choose_move(+GameState, +Level, -Move). O nível 1 deverá devolver uma jogada válida aleatória. O nível 2 deverá devolver a melhor jogada no momento (algoritmo míope), tendo em conta a avaliação do estado de jogo.
+Nesta secção, temos a realçar que o nosso computador apenas realiza jogadas aleatórias. Contudo, decidimos manter a sintaxe pedida neste ponto, em que o segundo argumento do predicado choose_move(+GameState, +Level, -Move) é sempre 1 (jogada aleatória). 
 
-\*Nota: a implementação  do predicado de avaliação do tabuleiro  e do nível  2  de  dificuldade é 
-opcional, sendo contabilizado como uma funcionalidade extra [valorização: até +1 valor].
+Desta forma, o nosso predicado de escolha de jogada do computador vai buscar todas as jogadas válidas, escolhe uma aleatoriamente (usando a função random_member da biblioteca "random") e imprime a jogada escolhida, para que o jogador seguinte possa saber que jogada foi feita sem ter que estar a comparar o tabuleiro anterior e o atual.
 
 ## Conclusões
 Conclusões do trabalho, incluindo limitações do trabalho desenvolvido (known issues), assim como possíveis melhorias identificadas (roadmap). (até 250 palavras)
