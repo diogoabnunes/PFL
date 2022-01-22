@@ -36,19 +36,23 @@ init_game(Board,Player):-
     init_board(Board),
 	init_player(Player).
 
+%move(GameState, +Move, -NewGameState)
+move(Board-Player, Col-Row-MoveDirection, NewBoard-Next) :-
+    get_cell_after_move(Col, Row, MoveDirection, Mcol, Mrow),
+    verify_available(Board, Mcol, Mrow),
+    get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
+    get_checker_points(Board, Col, Row, Points),
+    get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
+    Points < NewPoints,
+    change_player(Player, Next).
+
 % Player 1 vs. Player 2 --------------------------------------------------------
 game_pvp(Board, Player):-
     display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
-    get_new_play_move(Move, Board, Player),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
-    verify_available(Board, Mcol, Mrow),
-    get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
-    get_checker_points(Board, Col, Row, Points),
-    get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
-    Points < NewPoints, 
-    change_player(Player, Next),
+    get_new_play_move(MoveDirection, Board, Player),
+    move(Board-Player, Col-Row-MoveDirection, NewBoard-Next),
     game_over(NewBoard, Next),
     game_pvp(NewBoard, Next).
 
@@ -62,14 +66,8 @@ game_pvc(Board, Player):-
     display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
-    get_new_play_move(Move),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
-    verify_available(Board, Mcol, Mrow),
-    get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
-    get_checker_points(Board, Col, Row, Points),
-    get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
-    Points < NewPoints,
-    change_player(Player, Next),
+    get_new_play_move(MoveDirection),
+    move(Board-Player, Col-Row-MoveDirection, NewBoard-Next),
     game_over(NewBoard, Next),
     game_pvc(NewBoard, Next).
 
@@ -93,14 +91,8 @@ game_cvp(Board, Player):-
     display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
-    get_new_play_move(Move),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
-    verify_available(Board, Mcol, Mrow),
-    get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
-    get_checker_points(Board, Col, Row, Points),
-    get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
-    Points < NewPoints,
-    change_player(Player, Next),
+    get_new_play_move(MoveDirection),
+    move(Board-Player, Col-Row-MoveDirection, NewBoard-Next),
     game_over(NewBoard, Next),
     game_cvp(NewBoard, Next).
 

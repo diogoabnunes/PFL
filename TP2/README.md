@@ -113,7 +113,9 @@ Na função display_board, imprimimos o tabuleiro com as letras e números a ide
 Na função display_player, apenas enunciamos qual o jogador a realizar a jogada nesse momento.
 
 ### 4.3. Execução de Jogadas
-Validação e execução de uma jogada, obtendo o novo estado do jogo. O predicado deve chamar-se move(+GameState, +Move, -NewGameState).
+O predicado de execução de jogada é move(+GameState, +Move, -NewGameState). GameState é constituído pelo Board e o Player atual, Move é constituído pela coluna, linha e direção do movimento que pretendemos fazer e NewGameState devolve um novo tabuleiro e o jogador seguinte.
+
+Dentro deste predicado, verificamos que a célula-destino está livre e que a jogada é válida, isto é, que o valor dessa peça aumenta. Caso isto não aconteça, a jogada não é realizada e é pedido um novo input ao mesmo jogador.
 
 ### 4.4. Final do Jogo
 Verificação da situação de fim do jogo, com identificação do vencedor. O predicado deve chamar-se game_over(+GameState, -Winner).
