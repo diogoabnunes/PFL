@@ -129,5 +129,13 @@ get_valid_plays(Board, Player, Col, Row, Move, Tplays):-
 %get_computer_plays(+Board, +Player, -Play)
 get_computer_plays(Board, Player, Play):-
     get_valid_plays(Board, Player, Plays),
-    random_member(Play, Plays).
+    random_member(Play, Plays),
+    print_computer_play(Play),nl.
 
+print_computer_play([Col,Row,Move]) :-
+    RowTable is Row+1,
+    code(ColCode, Col),
+    move_code(Move, MoveCode),
+    write('Column (a-j): '), write(ColCode), nl,
+    write('Row (1-10): '), write(RowTable), nl,
+    write('Move: '), write(MoveCode).

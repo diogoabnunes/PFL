@@ -84,6 +84,7 @@ printRowId(X):-
 %display_game(+Board, +Player) 
 display_game(Board, Player) :-
     nl,nl,
+    write('---------------------------------------------------------------'),nl,
  	display_board(Board), 	
     display_player(Player).
 

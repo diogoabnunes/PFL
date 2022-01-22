@@ -49,7 +49,7 @@ game_pvp(Board, Player):-
     get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
     Points < NewPoints, 
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_pvp(NewBoard, Next).
 
 game_pvp(Board, Player):-
@@ -70,7 +70,7 @@ game_pvc(Board, Player):-
     get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
     Points < NewPoints,
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_pvc(NewBoard, Next).
 
 game_pvc(Board, Player):-
@@ -80,7 +80,7 @@ game_pvc(Board, Player):-
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_pvc(NewBoard, Next).
 
 game_pvc(Board, Player):-
@@ -101,7 +101,7 @@ game_cvp(Board, Player):-
     get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
     Points < NewPoints,
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_cvp(NewBoard, Next).
 
 game_cvp(Board, Player):-
@@ -111,7 +111,7 @@ game_cvp(Board, Player):-
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_cvp(NewBoard, Next).
 
 game_cvp(Board, Player):-
@@ -125,7 +125,7 @@ game_cvc(Board, Player):-
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
-    verify_end_game(NewBoard, Next),
+    game_over(NewBoard, Next),
     game_cvc(NewBoard, Next).
 
 game_cvc(Board, Player):-
@@ -134,11 +134,11 @@ game_cvc(Board, Player):-
 
 % General ----------------------------------------------------------------------
 
-verify_end_game(Board, Player):-
+game_over(Board, Player):-
     get_valid_plays(Board, Player, Plays), 
     end_the_game(Board, Player, Plays).
 
-end_the_game(Board, Player, []):-
+game_over(Board, Player, []):-
     display_board(Board),
     display_game_name,
     display_game_over,
@@ -146,4 +146,4 @@ end_the_game(Board, Player, []):-
     display_winner(Winner),
     abort.
 
-end_the_game(_, _, _).
+game_over(_, _, _).

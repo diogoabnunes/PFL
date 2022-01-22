@@ -11,6 +11,11 @@ code('h', 7).
 code('i', 8).
 code('j', 9).
 
+move_code(1, 'Right').
+move_code(2, 'Left').
+move_code(3, 'Up').
+move_code(4, 'Down').
+
 get_new_play_cell(IntCol, IntRow):-
     write('Column (a-j): '), nl,
     read(Col),
