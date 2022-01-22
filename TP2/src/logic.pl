@@ -38,7 +38,7 @@ init_game(Board,Player):-
 
 % Player 1 vs. Player 2 --------------------------------------------------------
 game_pvp(Board, Player):-
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
     get_new_play_move(Move, Board, Player),
@@ -59,7 +59,7 @@ game_pvp(Board, Player):-
 % Player vs. Computer --------------------------------------------------------
 game_pvc(Board, Player):-
     Player == 'V',
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
     get_new_play_move(Move),
@@ -75,7 +75,7 @@ game_pvc(Board, Player):-
 
 game_pvc(Board, Player):-
     Player == 'A',
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_computer_plays(Board, Player, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
@@ -90,7 +90,7 @@ game_pvc(Board, Player):-
 % Computer vs. Player --------------------------------------------------------
 game_cvp(Board, Player):-
     Player == 'A',
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_new_play_cell(Col, Row),
     verify_owner(Board, Col, Row, Player),
     get_new_play_move(Move),
@@ -106,7 +106,7 @@ game_cvp(Board, Player):-
 
 game_cvp(Board, Player):-
     Player == 'V',
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_computer_plays(Board, Player, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
@@ -120,7 +120,7 @@ game_cvp(Board, Player):-
 
 % Computer 1 vs. Computer 2 --------------------------------------------------------
 game_cvc(Board, Player):-
-    display_game(Board, Player),
+    display_game(Board-Player),
     get_computer_plays(Board, Player, [Col, Row, Move]),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
@@ -136,7 +136,7 @@ game_cvc(Board, Player):-
 
 game_over(Board, Player):-
     get_valid_plays(Board, Player, Plays), 
-    end_the_game(Board, Player, Plays).
+    game_over(Board, Player, Plays).
 
 game_over(Board, Player, []):-
     display_board(Board),

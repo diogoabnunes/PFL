@@ -58,57 +58,59 @@ O **tabuleiro** é representado por uma lista de listas, sendo cada lista uma li
 Todos os jogos começam com a mesma disposição de peças:
 ```prolog
 [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,V,A,V,A,V,A,0,0],
-    [0,0,A,V,A,V,A,V,0,0],
-    [0,0,V,A,0,0,V,A,0,0],
-    [0,0,A,V,0,0,A,V,0,0],
-    [0,0,V,A,V,A,V,A,0,0],
-    [0,0,A,V,A,V,A,V,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ','V','A','V','A','V','A',' ',' '],
+    [' ',' ','A','V','A','V','A','V',' ',' '],
+    [' ',' ','V','A',' ',' ','V','A',' ',' '],
+    [' ',' ','A','V',' ',' ','A','V',' ',' '],
+    [' ',' ','V','A','V','A','V','A',' ',' '],
+    [' ',' ','A','V','A','V','A','V',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 ]
 ```
 
 Um possível estado intermédio de jogo é o seguinte:
 ```prolog
 [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,V,V,A,V,A,A,0,0],
-    [0,0,A,A,A,V,V,0,0,0],
-    [0,0,A,V,0,0,V,0,A,0],
-    [0,A,V,V,V,A,V,V,0,0],
-    [0,0,V,0,0,A,0,A,0,0],
-    [0,A,V,A,A,A,0,0,0,0],
-    [0,0,0,0,0,V,0,V,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ','V','V','A','V','A','A',' ',' '],
+    [' ',' ','A','A','A','V','V',' ',' ',' '],
+    [' ',' ','A','V',' ',' ','V',' ','A',' '],
+    [' ','A','V','V','V','A','V','V',' ',' '],
+    [' ',' ','V',' ',' ','A',' ','A',' ',' '],
+    [' ','A','V','A','A','A',' ',' ',' ',' '],
+    [' ',' ',' ',' ',' ','V',' ','V',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 ]
 ```
 
 Um possível estado final de jogo, em que o jogador Azul não consegue realizar nenhuma jogada válida (sendo o vencedor o jogador Vermelho), é o seguinte:
 ```prolog
 [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,V,0,V,0,0,0,0],
-    [0,0,V,0,A,0,A,A,0,0],
-    [0,A,0,A,A,V,V,0,0,0],
-    [0,A,0,0,0,V,V,0,A,0],
-    [0,A,V,V,V,A,V,V,0,0],
-    [0,A,V,0,0,A,A,0,0,0],
-    [0,0,V,A,A,A,0,0,0,0],
-    [0,0,0,0,0,V,V,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+    [' ',' ',' ','V',' ','V',' ',' ',' ',' '],
+    [' ',' ','V',' ','A',' ','A','A',' ',' '],
+    [' ','A',' ','A','A','V','V',' ',' ',' '],
+    [' ','A',' ',' ',' ','V','V',' ','A',' '],
+    [' ','A','V','V','V','A','V','V',' ',' '],
+    [' ','A','V',' ',' ','A','A',' ',' ',' '],
+    [' ',' ','V','A','A','A',' ',' ',' ',' '],
+    [' ',' ',' ',' ',' ','V','V',' ',' ',' '],
+    [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
 ]
 ```
 
-O jogador pode ser:
-- `Player`, quando for a vez de um humano.
-- `Bot`, quando for a vez do computador realizar uma jogada.
+TODO: confirmar estados iniciais, intermédios e finais. Se for mais fácil, substituir com um exemplo ao correr o Computer 1 vs. Computer 2.
 
 ### 4.2. Visualização do estado de jogo
-descrição da implementação do predicado de visualização do estado de jogo. Pode incluir informação sobre o sistema de menus criado, assim como interação com o utilizador, incluindo formas de validação de entrada. O predicado de visualização deverá chamar-se display_game(+GameState), recebendo o estado de jogo atual (que inclui o jogador que efetuará a próxima jogada). Serão valorizadas visualizações apelativas e intuitivas.
+O predicado de visualização do jogo é chamado pela função display_game(Board-Player), que por sua vez chama display_board(Board) e display_player(Player).
+
+Na função display_board, imprimimos o tabuleiro com as letras e números a identificar, respetivamente, as colunas e as linhas do mesmo.
+
+Na função display_player, apenas enunciamos qual o jogador a realizar a jogada nesse momento.
 
 ### 4.3. Execução de Jogadas
 Validação e execução de uma jogada, obtendo o novo estado do jogo. O predicado deve chamar-se move(+GameState, +Move, -NewGameState).

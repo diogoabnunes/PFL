@@ -81,8 +81,8 @@ printRowId(X):-
 printRowId(X):- 
     format('                             ~w', X).
 
-%display_game(+Board, +Player) 
-display_game(Board, Player) :-
+%display_game(+GameState) 
+display_game(Board-Player) :-
     nl,nl,
     write('---------------------------------------------------------------'),nl,
  	display_board(Board), 	
