@@ -113,7 +113,7 @@ get_plays(Col, Row, Move,[[Col,Row,Move]|Tplays]):-
 get_valid_plays(Board, Player, Plays):-
     get_valid_plays(Board, Player, 0, 0, 1, Plays).
 
-% jquando passa para a row 10 ja fica fora do tabuleiro 
+% quando passa para a row 10 ja fica fora do tabuleiro 
 get_valid_plays(_, _, _, 10, _, []).
 
 get_valid_plays(Board, Player, Col, Row, Move,[[Col,Row,Move]|Tplays]):-

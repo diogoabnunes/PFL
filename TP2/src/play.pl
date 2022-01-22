@@ -1,11 +1,10 @@
 :- [logic].
-:- [utils].
 
 play :- 
     repeat, 
     display_game_name,
     menu_game_mode, nl,
-    read_number(Choice),
+    read(Choice),
     Choice < 5,
     start(Choice).
 
@@ -31,7 +30,7 @@ start(Choice) :-
     game_cvc(Board, Player).
 
 start(Choice) :-
-    Choice == 5,
+    Choice == 0,
     abort.
 
 start(_) :-

@@ -1,4 +1,3 @@
-
 :- [menu].
 
 code('a', 0).
@@ -22,18 +21,19 @@ get_new_play_cell(IntCol, IntRow):-
     verify_row_choice(Row),
     IntRow is Row - 1.
 
-get_new_play_move(Move):-
-    menu_play_moves,
+get_new_play_move(Move, Board, Player):-
+    menu_play_moves,nl,
     read(Move),
-    verify_move_choice(Move).
+    verify_move_choice(Move, Board, Player).
 
+%verify_move_choice(+Move, +Board, +Player):-
+verify_move_choice(1, _, _).
+verify_move_choice(2, _, _).
+verify_move_choice(3, _, _).
+verify_move_choice(4, _, _).
 
-%verify_move_choice(+Move):-
-verify_move_choice(Move):-
-   ( Move == 1; 
-    Move == 2; 
-    Move == 3; 
-    Move == 4) .
+verify_move_choice(0, Board, Player) :-
+    end_the_game(Board, Player, []).
 
 %verify_row_choice(+Row):-
 verify_row_choice(Row):-
