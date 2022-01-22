@@ -1,9 +1,11 @@
-%verify_available(+Board, +Col, +Row)
+/*
+* verify_available(+Board, +Col, +Row)
+* Verifica que uma dada posição no Board dada por [Col, Row] está vazia (' ').
+*/
 verify_available(Board, Col, Row) :-
     get_cell_value(Board, Col, Row, Value), !,
     Value == ' '.
 
-%get_cell_value(+Board, +Col, +Row, -Val)
 get_cell_value(Board, Col, Row, Val) :-
     get_cell_value(Board, Col, Row, 0, Val).
 
@@ -27,7 +29,10 @@ check_value([_|T], Col, Val, Counter):-
 check_value([H|_], Col, H, Counter):-
     Counter == Col.
 
-%replace_value_matrix(+Board, +Col, +Row, Val, -NewBoard).
+/*
+* replace_value_matrix(+Board, +Col, +Row, Val, -NewBoard)
+* TODO:
+*/
 replace_value_matrix(Board, Col, Row, Val, NewBoard) :-
     replace_value_matrix(Board, Col, Row, Val, [], NewBoard, 0).
 
@@ -45,8 +50,6 @@ replace_value_matrix([H|T], Col, Row, Val, TmpList, NewBoard, Counter) :-
 
 concat([], L, L).
 concat([X|L1], L2, [X|L3]) :- concat(L1, L2, L3).
-
-%replace_value_list---------------------------------------------------------------------
 
 replace_value_list([H|T], Pos, Val, L):-
     replace_value_list([H|T], 0, Pos, Val, [], L).
