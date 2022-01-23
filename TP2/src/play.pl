@@ -2,10 +2,11 @@
 :- [utils].
 
 play :- 
-    repeat, 
+    %repeat, 
     display_game_name,
     menu_game_mode, nl,
-    read_number(Choice),
+    read(Choice),
+    write(Choice),
     Choice < 4,
     start(Choice).
 

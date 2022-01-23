@@ -46,8 +46,7 @@ replace_value_matrix([H|T], Col, Row, Val, TmpList, NewBoard, Counter) :-
 concat([], L, L).
 concat([X|L1], L2, [X|L3]) :- concat(L1, L2, L3).
 
-%replace_value_list---------------------------------------------------------------------
-
+%replace_value_list(+List, +Pos, +Val, -ResultList)
 replace_value_list([H|T], Pos, Val, L):-
     replace_value_list([H|T], 0, Pos, Val, [], L).
 

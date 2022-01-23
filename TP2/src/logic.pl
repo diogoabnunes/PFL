@@ -74,7 +74,7 @@ game_pvc(Board, Player):-
     Points < NewPoints,
     change_player(Player, Next),
     verify_end_game(NewBoard, Next),
-    game_pvp(NewBoard, Next).
+    game_pvc(NewBoard, Next).
 
 game_pvc(Board, Player):-
     Player == 'A',
@@ -84,7 +84,7 @@ game_pvc(Board, Player):-
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
     verify_end_game(NewBoard, Next),
-    game_pvp(NewBoard, Next).
+    game_pvc(NewBoard, Next).
 
 game_pvc(Board, Player):-
     not_valid, nl,nl,
@@ -94,6 +94,7 @@ game_pvc(Board, Player):-
 game_cvc(Board, Player):-
     display_game(Board, Player),
     get_computer_plays(Board, Player, [Col, Row, Move]),
+    display_play(Col, Row, Move),
     get_cell_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),

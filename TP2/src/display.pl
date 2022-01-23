@@ -48,7 +48,27 @@ display_game_over :-
 	nl.
 
 display_player(Player):-
-	format('     Player: ~w', Player), nl, nl, nl. 
+	format('     Player: ~w', Player),nl.
+
+display_play(Col, Row, Move):-
+    code_move(Move, CodedMove),
+	format('     Play: ~w ~w ~w', [Col, Row, CodedMove]), nl, nl, nl.
+
+decode_col(0, 'a', 0).
+decode_col(1, 'b', 1).
+decode_col(2, 'c', 2).
+decode_col(3, 'd', 3).
+decode_col(4, 'e', 4).
+decode_col('f', 5).
+decode_col('g', 6).
+decode_col('h', 7).
+decode_col('i', 8).
+decode_col('j', 9).
+
+decode_move(1, 'rigth').
+decode_move(2, 'left').
+decode_move(3, 'up').
+decode_move(4, 'down').
 
 display_winner(Player):-
 	nl, format('                               WINNER Player: ~w ', Player), nl, nl, nl.

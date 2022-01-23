@@ -1,22 +1,22 @@
 
 :- [menu].
 
-code('a', 0).
-code('b', 1).
-code('c', 2).
-code('d', 3).
-code('e', 4).
-code('f', 5).
-code('g', 6).
-code('h', 7).
-code('i', 8).
-code('j', 9).
+code_col('a', 0).
+code_col('b', 1).
+code_col('c', 2).
+code_col('d', 3).
+code_col('e', 4).
+code_col('f', 5).
+code_col('g', 6).
+code_col('h', 7).
+code_col('i', 8).
+code_col('j', 9).
 
 get_new_play_cell(IntCol, IntRow):-
     write('Column: '), nl,
     read(Col),
     verify_col_choice(Col),
-    code(Col, IntCol),
+    code_col(Col, IntCol),
     write('Row: '), nl,
     read(Row),
     verify_row_choice(Row),
