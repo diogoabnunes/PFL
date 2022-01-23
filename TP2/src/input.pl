@@ -1,19 +1,8 @@
-code('a', 0).
-code('b', 1).
-code('c', 2).
-code('d', 3).
-code('e', 4).
-code('f', 5).
-code('g', 6).
-code('h', 7).
-code('i', 8).
-code('j', 9).
 
-move_code(1, 'Right').
-move_code(2, 'Left').
-move_code(3, 'Up').
-move_code(4, 'Down').
-
+/*
+* menu_game_mode
+* Imprime as opções de modo de jogo
+*/
 menu_game_mode :-
 	nl,write('Choose the game mode: '),nl,nl,
 	write('1. Player 1 vs. Player 2'),nl,
@@ -22,6 +11,10 @@ menu_game_mode :-
 	write('4. Computer 1 vs. Computer 2'),nl,
 	write('0. Quit').
 
+/*
+* menu_play_moves
+* Imprime as opções de movimento da peça
+*/
 menu_play_moves :-
 	nl,write('Choose the next move: '),nl,
 	write('1. Right'),nl,
@@ -88,6 +81,7 @@ verify_row_choice(Row):-
 /*
 * verify_move_choice(+Move, +Board, +Player)
 * Se a escolha for 0, o jogador atual desiste e concede a vitória ao outro jogador (game_over).
+* O terceiro argumento de game_over é uma lista com as jogadas possiveis, como Player desistiu a lista é vazia
 */
 verify_move_choice(1, _, _).
 verify_move_choice(2, _, _).
@@ -95,3 +89,27 @@ verify_move_choice(3, _, _).
 verify_move_choice(4, _, _).
 verify_move_choice(0, Board, Player) :-
     game_over(Board, Player, []).
+
+/*
+* code(+X, -Y) ou code(-X, +Y)
+* Y é o número que representa internamente a coluna X 
+*/
+code('a', 0).
+code('b', 1).
+code('c', 2).
+code('d', 3).
+code('e', 4).
+code('f', 5).
+code('g', 6).
+code('h', 7).
+code('i', 8).
+code('j', 9).
+
+/*
+* move_code(+X, -Y) ou move_code(-X, +Y)
+* X é o número que representa internamente o movimento Y
+*/
+move_code(1, 'Right').
+move_code(2, 'Left').
+move_code(3, 'Up').
+move_code(4, 'Down').

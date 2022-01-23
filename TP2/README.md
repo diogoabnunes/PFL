@@ -12,10 +12,10 @@
 | Margarida Alves Pinho | up201704599 | y% |
 
 ## 2. Instalação e Execução
-- Install and Execute SICStus
-- Consult ```play.pl``` file
-- Type ```play.```
-- Play! :)
+- Instalar e executar SICStus
+- Consultar o ficheiro ```play.pl``` 
+- Escrever ```play.```
+- Jogar! :)
 
 ## 3. Descrição do Jogo (até 350 palavras) (exceptuando links e imagens, 287 palavras)
 Jostle é um jogo para 2 jogadores que usa um tabuleiro 10x10 com 16 peças (já inicialmente dispostas no tabuleiro) para cada jogador (Azul e Vermelho). Cada jogada consiste em mover 1 das peças do próprio jogador e não é permitido passar. A primeira jogada pertence sempre ao jogador Vermelho.
@@ -46,7 +46,6 @@ Ficam aqui 2 links com informação útil sobre Jostle:
 - [Board Game Peek](https://boardgamegeek.com/boardgame/68808/jostle)
 
 ## 4. Lógica do Jogo
-descrever (não basta copiar código fonte) o projeto e implementação da lógica do  jogo  em  Prolog.  O  predicado  de  início  de  jogo  deve  ser  play/0.  Esta  secção  deve  ter informação sobre os seguintes tópicos (até 2400 palavras no total): 
 
 ### 4.1. Representação interna do estado do jogo
 
@@ -113,15 +112,15 @@ No predicado display_board, imprimimos o tabuleiro com as letras e números a id
 No predicado display_player, apenas enunciamos qual o jogador a realizar a jogada nesse momento.
 
 ### 4.3. Execução de Jogadas
-O predicado de execução de jogada é move(+GameState, +Move, -NewGameState). GameState é constituído pelo Board e o Player atual, Move é constituído pela coluna, linha e direção do movimento que pretendemos fazer e NewGameState devolve um novo tabuleiro e o jogador seguinte.
+O predicado de execução de jogada é move(+GameState, +Move, -NewGameState). GameState é constituído pelo Board e o Player atual, Move é constituído pela coluna, linha e direção do movimento que pretendemos fazer e NewGameState é o novo tabuleiro após a jogada ser efetuada e o jogador seguinte.
 
-Dentro deste predicado, verificamos que a célula-destino está livre e que a jogada é válida, isto é, que o valor dessa peça aumenta. Caso isto não aconteça, a jogada não é realizada e é pedido um novo input ao mesmo jogador.
+Dentro deste predicado, verificamos que a célula-escolhida pertence ao jogador, que a célula-destino está livre e que a jogada é válida, isto é, que o valor dessa peça aumenta. Caso isto não aconteça, a jogada não é realizada e é pedido um novo input ao mesmo jogador.
 
 ### 4.4. Final do Jogo
 Para verificar o final do jogo e anunciar o vencedor, nós usamos o predicado game_over(+Board, +Player). Como o jogo só acaba quando um jogador não consegue realizar nenhuma jogada válida (esse jogador é o que perde o jogo), antes de voltar ao início do ciclo de jogo, verificamos se existem ainda jogadas válidas para o jogador seguinte, chamando valid_moves, como vai ser explicado na secção seguinte. Se existirem, o ciclo continua; caso contrário, é apresentado o tabuleiro final e é enunciado o vencedor do jogo.
 
 ### 4.5. Lista de jogadas válidas
-O predicado valid_moves(+GameState, -ListOfMoves) vai devolver em ListOfMoves uma lista de listas com as jogadas que ainda são possíveis realizar pelo próximo jogador. GameState é constituído pelo Board e pelo Player e este predicado chama outro predicado (get_valid_plays) que vai percorrer todo o tabuleiro e colocar em ListOfMoves todas as jogadas que forem possíveis para o respetivo jogador. Cada lista de jogada possível é constituída por coluna, linha e direção do movimento que se pode realizar. Desta forma, uma mesma peça pode ter no máximo 4 movimentos possíveis, pelo que esta lista não enuncia apenas as peças que podem ser jogadas, mas também quais movimentos podem ser feitos. 
+O predicado valid_moves(+GameState, -ListOfMoves) vai criar em ListOfMoves uma lista de listas com as jogadas que ainda são possíveis realizar pelo próximo jogador. GameState é constituído pelo Board e pelo Player e este predicado chama outro predicado (get_valid_plays) que vai percorrer todo o tabuleiro e colocar em ListOfMoves todas as jogadas que forem possíveis para o respetivo jogador. Cada lista de jogada possível é constituída por coluna, linha e direção do movimento que se pode realizar. Desta forma, uma mesma peça pode ter no máximo 4 movimentos possíveis, pelo que esta lista não enuncia apenas as peças que podem ser jogadas, mas também quais movimentos podem ser feitos. 
 
 ### 4.6. Avaliação do Estado do Jogo (extra)
 A nossa melhor forma de avaliar o estado do jogo do ponto de vista de um jogador é, na nossa opinião, o número de jogadas possíveis que esse jogador pode fazer. Achamos ser a melhor forma de avaliação, uma vez que quanto menos jogadas possíveis um jogador tiver, mais próximo está de perder o jogo.

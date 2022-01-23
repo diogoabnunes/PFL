@@ -1,5 +1,9 @@
 :- [logic].
 
+/*
+* play
+* Começar o jogo
+*/
 play :- 
     %repeat, 
     display_game_name,
@@ -8,6 +12,10 @@ play :-
     Choice < 5,
     start(Choice).
 
+/*
+* start(+Choice)
+* Iniciar o jogo em si de acordo com a Choice
+*/
 start(Choice) :- 
     Choice == 1, !,
     initial_state(Board,Player),

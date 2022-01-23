@@ -1,37 +1,37 @@
 /*
 * verify_available(+Board, +Col, +Row)
-* Verifica que uma dada posição no Board dada por [Col, Row] está vazia (' ').
+* Verifica que uma dada posição no Board, dada por Col e Row, está vazia (' ') e no caso de isto ser verdade significa que a célula está disponível.
 */
 verify_available(Board, Col, Row) :-
-    get_cell_value(Board, Col, Row, Value), !,
-    Value == ' '.
+    get_cell(Board, Col, Row, Cell), !,
+    Cell == ' '.
 
-get_cell_value(Board, Col, Row, Val) :-
-    get_cell_value(Board, Col, Row, 0, Val).
+get_cell(Board, Col, Row, Cell) :-
+    get_cell(Board, Col, Row, 0, Cell).
 
-get_cell_value([_|T], Col, Row, Counter, Val):-
+get_cell([_|T], Col, Row, Counter, Cell):-
     Counter < Row,
     C is Counter + 1,
-    get_cell_value(T, Col, Row, C, Val).
+    get_cell(T, Col, Row, C, Cell).
 
-get_cell_value([H|_], Col, Row, Counter, Value):-
+get_cell([H|_], Col, Row, Counter, Cell):-
     Counter == Row,
-    check_value(H, Col, Value).
+    check_cell(H, Col, Cell).
 
-check_value([H|T], Col, Val):-
-    check_value([H|T], Col, Val, 0).
+check_cell([H|T], Col, Cell):-
+    check_cell([H|T], Col, Cell, 0).
 
-check_value([_|T], Col, Val, Counter):-
+check_cell([_|T], Col, Cell, Counter):-
     Counter < Col, !,
     C is Counter + 1,
-    check_value(T, Col, Val, C).
+    check_cell(T, Col, Cell, C).
 
-check_value([H|_], Col, H, Counter):-
+check_cell([H|_], Col, H, Counter):-
     Counter == Col.
 
 /*
-* replace_value_matrix(+Board, +Col, +Row, Val, -NewBoard)
-* TODO:
+* replace_value_matrix(+Board, +Col, +Row, +Val, -NewBoard)
+* Coloca Val numa dada posição no Board, dada por Col e Row, sendo que NewBoard é o tabuleiro resultante desta alteração.
 */
 replace_value_matrix(Board, Col, Row, Val, NewBoard) :-
     replace_value_matrix(Board, Col, Row, Val, [], NewBoard, 0).
@@ -51,7 +51,6 @@ replace_value_matrix([H|T], Col, Row, Val, TmpList, NewBoard, Counter) :-
 concat([], L, L).
 concat([X|L1], L2, [X|L3]) :- concat(L1, L2, L3).
 
-%replace_value_list(+List, +Pos, +Val, -ResultList)
 replace_value_list([H|T], Pos, Val, L):-
     replace_value_list([H|T], 0, Pos, Val, [], L).
 

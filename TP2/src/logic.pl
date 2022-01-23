@@ -38,13 +38,18 @@ initial_state(Board,Player):-
 * Predicado de movimento de uma peça.
 */
 move(Board-Player, Col-Row-MoveDirection, NewBoard-Next) :-
-    get_cell_after_move(Col, Row, MoveDirection, Mcol, Mrow),
+    get_pos_after_move(Col, Row, MoveDirection, Mcol, Mrow),
     verify_available(Board, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     get_checker_points(Board, Col, Row, Points),
     get_checker_points(NewBoard, Mcol, Mrow, NewPoints),
-    Points < NewPoints,
+    verify_points(Points, NewPoints), 
     change_player(Player, Next).
+
+move(_, _, _) :-
+    !,
+    not_valid, nl,nl,
+    fail.
 
 /*
 * game_pvp(+Board, +Player)
@@ -88,7 +93,7 @@ game_pvc(Board, Player):-
     display_game(Board-Player-ValueV-ValueA),
     choose_move(Board-Player, 1, [Col, Row, Move]),
     display_computer_play([Col, Row, Move]),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
+    get_pos_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
     game_over(NewBoard, Next),
@@ -121,7 +126,7 @@ game_cvp(Board, Player):-
     display_game(Board-Player-ValueV-ValueA),
     choose_move(Board-Player, 1, [Col, Row, Move]),
     display_computer_play([Col, Row, Move]),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
+    get_pos_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
     game_over(NewBoard, Next),
@@ -141,7 +146,7 @@ game_cvc(Board, Player):-
     display_game(Board-Player-ValueV-ValueA),
     choose_move(Board-Player, 1, [Col, Row, Move]),
     display_computer_play([Col, Row, Move]),
-    get_cell_after_move(Col, Row, Move, Mcol, Mrow),
+    get_pos_after_move(Col, Row, Move, Mcol, Mrow),
     get_newBoard(Board, Player, Col, Row, Mcol, Mrow, NewBoard),
     change_player(Player, Next),
     game_over(NewBoard, Next),
