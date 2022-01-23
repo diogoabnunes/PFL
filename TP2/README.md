@@ -8,8 +8,10 @@
 
 | Nome | Número | Contribuição |
 | -- | -- | -- |
-| Diogo André Barbosa Nunes | up201808546 | x% |
-| Margarida Alves Pinho | up201704599 | y% |
+| Diogo André Barbosa Nunes | up201808546 | 50% |
+| Margarida Alves Pinho | up201704599 | 50% |
+
+Nota: Reparamos que as notas do primeiro trabalho estavam muito diferentes. No entanto, a diferença de empenho tinha sido ligeira e não achamos que se justifique as alterações na nota.  
 
 ## 2. Instalação e Execução
 - Instalar e executar SICStus
