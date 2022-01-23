@@ -19,7 +19,7 @@ Nota: Reparamos que as notas do primeiro trabalho estavam muito diferentes. No e
 - Escrever ```play.```
 - Jogar! :)
 
-## 3. Descrição do Jogo (até 350 palavras) (exceptuando links e imagens, 287 palavras)
+## 3. Descrição do Jogo
 Jostle é um jogo para 2 jogadores que usa um tabuleiro 10x10 com 16 peças (já inicialmente dispostas no tabuleiro) para cada jogador (Azul e Vermelho). Cada jogada consiste em mover 1 das peças do próprio jogador e não é permitido passar. A primeira jogada pertence sempre ao jogador Vermelho.
 
 ![Configuração inicial](images/inicial_setup.png)
@@ -145,7 +145,7 @@ Tendo em conta as dificuldades passadas e tendo em conta as possíveis melhorias
 
 ## Bibliografia
 
-[Documentação do SICStus](https://sicstus.sics.se/sicstus/docs/latest4/html/sicstus.html/)
-[Regras Oficiais](http://www.marksteeregames.com/Jostle_Go_rules.pdf)
-[Jostle - BoardGameGeek](https://boardgamegeek.com/boardgame/68808/jostle)
-[Página Moodle de PFL](https://moodle.up.pt/course/view.php?id=4031)
+- [Documentação do SICStus](https://sicstus.sics.se/sicstus/docs/latest4/html/sicstus.html/)
+- [Regras Oficiais](http://www.marksteeregames.com/Jostle_Go_rules.pdf)
+- [Jostle - BoardGameGeek](https://boardgamegeek.com/boardgame/68808/jostle)
+- [Página Moodle de PFL](https://moodle.up.pt/course/view.php?id=4031)
