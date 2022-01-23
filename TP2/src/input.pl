@@ -1,41 +1,78 @@
+code('a', 0).
+code('b', 1).
+code('c', 2).
+code('d', 3).
+code('e', 4).
+code('f', 5).
+code('g', 6).
+code('h', 7).
+code('i', 8).
+code('j', 9).
 
-:- [menu].
+move_code(1, 'Right').
+move_code(2, 'Left').
+move_code(3, 'Up').
+move_code(4, 'Down').
 
-code_col('a', 0).
-code_col('b', 1).
-code_col('c', 2).
-code_col('d', 3).
-code_col('e', 4).
-code_col('f', 5).
-code_col('g', 6).
-code_col('h', 7).
-code_col('i', 8).
-code_col('j', 9).
+menu_game_mode :-
+	nl,write('Choose the game mode: '),nl,nl,
+	write('1. Player 1 vs. Player 2'),nl,
+	write('2. Player vs. Computer'),nl,
+	write('3. Computer vs. Player'),nl,
+	write('4. Computer 1 vs. Computer 2'),nl,
+	write('0. Quit').
 
+menu_play_moves :-
+	nl,write('Choose the next move: '),nl,
+	write('1. Right'),nl,
+	write('2. Left'),nl,
+	write('3. Up'),nl,
+	write('4. Down'),nl,
+	write('0. Give Up').
+
+/*
+* get_new_play_cell(-IntCol, -IntRow)
+* Pede que o utilizador escolha uma coluna e uma linha de uma peça.
+*/
 get_new_play_cell(IntCol, IntRow):-
-    write('Column: '), nl,
+    write('Column (a-j): '), nl,
     read(Col),
     verify_col_choice(Col),
-    code_col(Col, IntCol),
-    write('Row: '), nl,
+    code(Col, IntCol),
+    write('Row (1-10): '), nl,
     read(Row),
     verify_row_choice(Row),
     IntRow is Row - 1.
 
-get_new_play_move(Move):-
-    menu_play_moves,
+/*
+* get_new_play_move(-Move, +Board, +Player)
+* Pede que o utilizador escolha uma direção para o movimento da peça e faz a verificação do input.
+*/
+get_new_play_move(Move, Board, Player):-
+    menu_play_moves,nl,
     read(Move),
-    verify_move_choice(Move).
+    verify_move_choice(Move, Board, Player).
 
+/*
+* verify_col_choice(+Cell):-
+* Verifica que a coluna escolhida está entre 'a' e 'j'.
+*/
+verify_col_choice(Col):-
+   (Col == 'a'; 
+    Col == 'b'; 
+    Col == 'c'; 
+    Col == 'd'; 
+    Col == 'e'; 
+    Col == 'f'; 
+    Col == 'g'; 
+    Col == 'h'; 
+    Col == 'i';
+    Col == 'j') .
 
-%verify_move_choice(+Move):-
-verify_move_choice(Move):-
-   ( Move == 1; 
-    Move == 2; 
-    Move == 3; 
-    Move == 4) .
-
-%verify_row_choice(+Row):-
+/*
+* verify_row_choice(+Row)
+* Verifica que a linha escolhida está entre 1 e 10.
+*/
 verify_row_choice(Row):-
    (Row == 1; 
     Row == 2; 
@@ -48,15 +85,13 @@ verify_row_choice(Row):-
     Row == 9;
     Row == 10) .
 
-%verify_col_choice(+Cell):-
-verify_col_choice(Col):-
-   (Col == 'a'; 
-    Col == 'b'; 
-    Col == 'c'; 
-    Col == 'd'; 
-    Col == 'e'; 
-    Col == 'f'; 
-    Col == 'g'; 
-    Col == 'h'; 
-    Col == 'i';
-    Col == 'j') .
+/*
+* verify_move_choice(+Move, +Board, +Player)
+* Se a escolha for 0, o jogador atual desiste e concede a vitória ao outro jogador (game_over).
+*/
+verify_move_choice(1, _, _).
+verify_move_choice(2, _, _).
+verify_move_choice(3, _, _).
+verify_move_choice(4, _, _).
+verify_move_choice(0, Board, Player) :-
+    game_over(Board, Player, []).
