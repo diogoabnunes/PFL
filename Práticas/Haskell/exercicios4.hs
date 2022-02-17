@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 import Data.Char 
 
 -- 4.1
@@ -5,13 +6,12 @@ primos :: [Integer]
 primos = crivo [2..]
 
 crivo :: [Integer] -> [Integer]
-crivo (p:xs) = p : crivo [x | x<-xs, x `mod` p/=0]
+crivo (p:xs) = p : crivo [x | x<-xs, mod x p/=0]
 
 fatores :: Integer -> [Integer]
 fatores 1 = []
-fatores n = primo : fatores (n `div` primo)
-  where
-    primo = head (filter (\p -> n `mod` p == 0) primos)
+fatores n = primo : fatores (div n primo)
+  where primo = head (filter (\p -> mod n p == 0) primos)
 
 -- 4.2
 calcPi1 :: Int -> Double
@@ -23,10 +23,10 @@ aux n = n * (n+1) * (n+2)
 calcPi2 :: Int -> Double
 calcPi2 n = sum (take n (3 : zipWith(/) (cycle [4,-4]) [aux 2, aux 4..]))
 
--- 4.3
+-- 4.3 
 intercalar :: a -> [a] -> [[a]]
 intercalar n [] = [[n]]
-intercalar n list = (n : list) : map (head list:)  (intercalar n (tail list))
+intercalar n list = (n : list) : map (head list:) (intercalar n (tail list))
 
 -- 4.4
 unique :: (Eq a) => [a] -> [a]
@@ -52,8 +52,6 @@ getDesl x = ord x - 65
 
 cifraChave :: String -> String -> String
 cifraChave x y = concatMap (\k -> returnNext (fst k) (getDesl (snd k))) (zip x repeatedStr)
-  where
-    repeatedStr = concat (replicate ((length x `div` length y) + 1) y)
+  where repeatedStr = concat (replicate ((length x `div` length y) + 1) y)
 
--- 4.6
--- a
+-- 4.6 until 4.12: TODO:
