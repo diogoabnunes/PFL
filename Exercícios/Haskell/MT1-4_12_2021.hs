@@ -63,14 +63,14 @@ alturas (N _ esq dir) = N (1 + max a b) esquerdo direito
           direito@(N b _ _) = alturas dir
 
 -- 8
-equilibrada :: Arv a -> Bool 
-equilibrada F = True 
-equilibrada (N _ F F) = True 
-equilibrada (N _ F dir) = b <= 1 where (N b _ _) = alturas dir 
-equilibrada (N _ esq F) = a <= 1 where (N a _ _) = alturas esq 
-equilibrada (N _ esq dir) = a <= 1 && b <= 1 where (N a _ _) = alturas esq
-                                                   (N b _ _) = alturas dir 
+equilibrada :: Arv a -> Bool
+equilibrada F = True
+equilibrada (N _ F F) = True
+equilibrada (N _ F dir) = b <= 1 where (N b _ _) = alturas dir
+equilibrada (N _ esq F) = a <= 1 where (N a _ _) = alturas esq
+equilibrada (N _ esq dir) = max a b - min a b <= 1 where (N a _ _) = alturas esq
+                                                         (N b _ _) = alturas dir
 
 -- 9
-f :: (a -> b -> c) -> b -> a -> c 
+f :: (a -> b -> c) -> b -> a -> c
 f a b c = a c b
